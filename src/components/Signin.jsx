@@ -46,7 +46,7 @@ export default function App() {
             console.log('bro is signed in');
             navigate('/settings') 
         } else {
-            console.log('bro is signed out!'); 
+            console.log('bro is signed out!!'); 
         }
     }
 
