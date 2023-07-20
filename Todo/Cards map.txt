@@ -1,0 +1,51 @@
+OnMount:
+    1. Grabs deck data
+    2. Gets the due cards into a array
+    3. If there are no dueCards, then it runs noDueCards()
+    4. If there are due cards then it sets the Cards state variable with any non due cards
+
+
+
+noDueCards():
+    1. Grabs deck data
+    2. Grabs all cards that are not graduated regardless of when they are due
+    3. Puts them into DueCards state variable
+    4. Runs handleNextCard()
+
+handleNextCard():
+    1. If there is still another card in DueCards to study, it increases index and unflips card
+    2. If not, then it runs noDueCards()
+
+
+
+When a Card is rated:
+
+
+
+handleReview():
+    1. If the card is not graduated, it calcualtes:
+        -Whether it is still graduated based on if it was rated easy or if it was the second time rated Good
+        -Number of consecGood is it was rated good and it is not graduated
+        -New interval based on what the rating was
+        -Next Review time based on the newInterval and the current time
+    2. Then it creates a object with the current card data and the new aforementioned data
+    3. It sets the Card state variable with the new Data 
+    4. Sets the cardChange state variable to run the related useEffect():
+        -it updates the firestore based on what is in the cards state variable
+    
+    5. If the card is graduated, it calcualtes:
+        -The next Interval based on what is was rated
+        - The next Reivew based on the new Intervla and current time
+        -The number of lapses, increasing by 1 if it was rated with again
+        -If the card is a leech card if the number of lapses is 6
+    6. Then it ceates an updated Card object with the old card data and updated new properties
+    7. It sets the cards state variable with old state data plus the new updatedCard
+    8. Sets the cardChange state varibale running the related useEffect:
+        -Updates the firestore based on what is in the cards state variable
+    
+    9. Runs handleNextCard()
+    
+
+
+
+

@@ -1,0 +1,11 @@
+
+    Use cookies to store the login token rather than localStorage or sessionStorage. Cookies are sent with every request, while local/session storage are only available to the frontend.
+    Set the cookie to be httpOnly so it is not accessible via JavaScript. This prevents XSS attacks.
+    Use a cryptographic signing/hashing algorithm like HS256 to encode the token before storing it. This ensures the token cannot be manipulated.
+    Set the cookie to be SameSite=Lax or SameSite=Strict to restrict when the token is sent and prevent CSRF attacks.
+    Give the remember me cookie a relatively short expiration (e.g. 7 days) for security. Prompt users to re-enter credentials after expiration.
+    Implement refresh tokens - issue a non-expiring refresh token to get new access tokens when expired. This avoids frequent re-authentication.
+    Send tokens over HTTPS and enable CORS protection. Never transmit tokens over unencrypted connections.
+    On the server, set user sessions to expire at a shorter time than the remember me token. This can act as a backup.
+    Provide users an option to actively log out which revokes and deletes the remember me cookie.
+    Use credentials like one-time codes or magic links for high security situations vs remember me tokens.

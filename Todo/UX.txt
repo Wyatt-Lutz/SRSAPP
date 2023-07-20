@@ -1,0 +1,37 @@
+FIX USER PERSISTANTS!!!!!
+
+-Decks
+    -Check if signed in
+    -Show how many cards are due for each deck 
+    -Make reactmodel look better, make the background color the theme black color
+    -Make a loading aimation for both loading the decks, and the reactmodel, because theres a delay before reactmodal opens
+    -Make it so it doenst prompt unfinished deck each time component mouunts, after the first time, could just put a little box on the near bottom-right corner or top right or soemting
+
+
+-Signin
+    - Make it so you can press the signin by pressing enter
+
+
+-DeckCreation
+    
+    -Make a cancel button
+    
+    -Make a pages feature so its not loading 1000 decks or something,
+     like only load 10 per page, then user can switch to next page
+        -Could make a sort feature or a search featrue
+    -If you add a card, and its the longest text, it shifts the whole flex div over
+
+-Cards
+    -When deck is finished, make it not an alert
+    -Add implementation for # of new decks per day. Could just add the # in a field in user or soemthing, unless it were different per deck.
+
+-DeckEditation
+
+    
+
+Add lazy loading whereever needed, like loading screens for firebase loading
+    -Cards
+    -DeckEditation
+    -Decks
+
+OR I could make it so it looks like it instabtly delete whatever or changed something but it took a little longer in reatly to change it on firebase, What I did for /decks

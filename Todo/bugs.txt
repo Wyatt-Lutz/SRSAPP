@@ -1,0 +1,27 @@
+Signup:
+    - Get this error when typing in textboxes: 'Feature Policy: Skipping unsupported feature name “publickey-credentials-get”.'
+    - Throws error becuase using 'class' when should be using 'className'
+
+Signin:
+    - Make pass and user state vars into one userData var
+
+Decks:
+    - The unfinished Decks noti displays even when the last deck was finished (might just get rid of the whole thing)
+
+DeckEditation:
+    - Try to optimize the redeclaration of textFields in the createNewCard and handleDelete functions
+    - Add check if there is text in textboxes when adding a card or else a empty card is created
+    - Sometimes deleting a card doesnt work
+    - While editing a card, then press edit on another card, you can have both edits open at same time
+    - Adding a card doesnt add other card data
+
+DeckCreation:
+    - Check if created card is similar to one already existing => warn user if true
+    - Make sure user cant put in 3 trillion cards or whatever
+    - Make the current cards scrollable
+    
+
+App:
+    - Add a wait time in between when compoennt mounts and when dom displays stuff so it can check whether there is a signed in unsupported 
+    - Fix user persistance 
+    - Find out a way to check if user is signed in efficiently throughout the whole site instead of checked in each component.

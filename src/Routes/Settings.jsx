@@ -1,30 +1,21 @@
+import { signOut } from "firebase/auth";
+import { db, auth, app } from './firebase.js';
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-
 
 export default function App() {
-    const firebaseConfig = {
-        apiKey: "AIzaSyBu1ALA2a6W2CF_3GXhFCwL_yUSFare5qg",
-        authDomain: "srsappv2.firebaseapp.com",
-        projectId: "srsappv2",
-        storageBucket: "srsappv2.appspot.com",
-        messagingSenderId: "814430664725",
-        appId: "1:814430664725:web:51f71304f5a33a8cbb761c",
-        measurementId: "G-P9NFXSNWG1"
-      
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
     const navigate = useNavigate();
     const user = auth.currentUser;
-    if (user) {
-        console.log('bro is signed in'); 
-    } else {
-        console.log('bro is signed out'); 
-        navigate('/signin')
+    if (!user) {
+      navigate('/');
     }
 
+    function onSignOut() {
+      signOut(auth).then(() => {
+        navigate('/');
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
     return (
 <section class="bg-gray-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
@@ -35,7 +26,8 @@ export default function App() {
           <div class="flex justify-between">
             <div class="text-white">Cards per day</div>
             <input id="dailyCards" type="number" class="appearance-none rounded border border-gray-600 bg-gray-700 text-sm" />
-          </div>
+            <button onClick={onSignOut}>Sign out</button>
+          </div>  
         </form>
       </div>
     </div>
