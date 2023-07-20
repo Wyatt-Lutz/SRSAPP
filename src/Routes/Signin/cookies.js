@@ -29,17 +29,16 @@ export async function issueCookie(data, servKeyPromise) {
 export async function decodeCookie(servKeyPromise) {
   const servKey = await servKeyPromise;
 
-  
+
   const cookies = document.cookie;
   if (cookies.toString() === "") {
     console.log('no rememberMe cookie');
     return;
   } else {
     const [_, cookieDatas] = cookies.split('=');
-    console.log(cookieDatas.toString());
     
-    const decryptedData = CryptoAES.decrypt(cookieDatas, servKey);
-    console.log(decryptedData.toString(CryptoENC));
+    const decryptedData = CryptoAES.decrypt(cookieDatas, servKey).toString(CryptoENC);
+    
   }
 }
 
