@@ -13,7 +13,7 @@ const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense>
+      <Suspense fallback={<div></div>}>
         <Routes>
           <Route path='/' element={<Signin />} />
           <Route path='/signup' element={<Signup />} />
