@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
-import { db, auth, app } from '../Routes/firebase.js';
+import { db, auth, app } from '../firebase.js';
 import Buttons from '../components/Buttons.jsx';
 import Inputs from '../components/Inputs.jsx';
 

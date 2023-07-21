@@ -1,5 +1,5 @@
 import { signOut } from "firebase/auth";
-import { db, auth, app } from './firebase.js';
+import { db, auth, app } from '../firebase.js';
 import { useNavigate } from "react-router-dom";
 
 export default function App() {

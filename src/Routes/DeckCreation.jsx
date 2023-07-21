@@ -7,7 +7,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import ReactModal from 'react-modal';
-import { db, auth, app } from './firebase.js';
+import { db, auth, app } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
 
 ReactModal.setAppElement('#root');

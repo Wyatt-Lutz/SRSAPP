@@ -1,5 +1,5 @@
 import React from 'react';
-import { auth, app } from '../firebase.js';
+import { auth, app } from '../../firebase.js';
 import { useNavigate } from 'react-router-dom';
 import Buttons from '../../components/Buttons.jsx';
 import { fetchDecks, deleteDeck } from './getDecks.js';

@@ -1,5 +1,5 @@
 import React from "react";
-import { db, auth, app } from './firebase.js';
+import { db, auth, app } from '../firebase.js';
 import { useNavigate } from "react-router-dom";
 
 export default function BasicSpeedDial() {

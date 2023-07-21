@@ -7,7 +7,7 @@ import {
   browserLocalPersistence,
 } from 'firebase/auth';
 
-import { db, auth, app } from '../firebase.js';
+import { db, auth, app } from '../../firebase.js';
 import { useForm } from 'react-hook-form';
 import { issueCookie } from './cookies.js';
 import { decodeCookie } from './cookies.js';

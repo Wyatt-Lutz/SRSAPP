@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { doc, collection, getDoc, setDoc } from 'firebase/firestore';
-import { db, auth, app } from './firebase.js';
+import { db, auth, app } from '../firebase.js';
 import ReactModal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 
