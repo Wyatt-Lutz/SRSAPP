@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Buttons from '../../components/Buttons.jsx';
 import { fetchDecks, deleteDeck } from './getDecks.js';
 
-
 function App() {
-
   const Button = React.memo(Buttons);
   const navigate = useNavigate();
   const user = auth.currentUser;
@@ -14,8 +12,8 @@ function App() {
   if (!user) {
     navigate('/');
   }
-  const decks = fetchDecks(user.uid)
-  
+  const decks = fetchDecks(user.uid);
+
   return (
     <section class='bg-gray-900'>
       <div class='flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0'>

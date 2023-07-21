@@ -1,7 +1,5 @@
-
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 
 const Signin = lazy(() => import('./Routes/Signin/Signin.jsx'));
 const Signup = lazy(() => import('./Routes/Signup.jsx'));
@@ -12,12 +10,10 @@ const Home = lazy(() => import('./Routes/Home.jsx'));
 const Decks = lazy(() => import('./Routes/Decks/Decks.jsx'));
 const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));
 
-
-
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Routes>
           <Route path='/' element={<Signin />} />
           <Route path='/signup' element={<Signup />} />

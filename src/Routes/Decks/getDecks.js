@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
-
-
 export function fetchDecks(userId) {
   const [decks, setDecks] = useState([]);
 
@@ -24,9 +22,7 @@ export function fetchDecks(userId) {
   return decks;
 }
 
-
 export async function deleteDeck(userId, deckId) {
-    const deckRef = doc(collection(db, 'users', userId, 'decks'), deckId);
-    await deleteDoc(deckRef);
+  const deckRef = doc(collection(db, 'users', userId, 'decks'), deckId);
+  await deleteDoc(deckRef);
 }
-

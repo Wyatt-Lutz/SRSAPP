@@ -19,8 +19,7 @@ export default function App() {
     const parsedData = JSON.parse(JSON.stringify(data));
     const email = parsedData.Email;
     const username = parsedData.Username;
-    const password = parsedData.Password
-   
+    const password = parsedData.Password;
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -35,7 +34,7 @@ export default function App() {
       .catch((error) => {
         console.error(error.code + ' ' + error.message);
       });
-  }
+  };
 
   return (
     <>
