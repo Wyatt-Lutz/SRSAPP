@@ -3,6 +3,7 @@ import { auth, app } from '../../firebase.js';
 import { useNavigate } from 'react-router-dom';
 import Buttons from '../../components/Buttons.jsx';
 import { fetchDecks, deleteDeck } from './getDecks.js';
+import Drawers from '../../components/Drawer.jsx';
 
 function App() {
   const Button = React.memo(Buttons);
@@ -15,9 +16,13 @@ function App() {
   const decks = fetchDecks(user.uid);
 
   return (
-    <section class='bg-gray-900'>
+    <div>
+    <div>
+      <Drawers />
+    </div>
+    <section>
       <div class='flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0'>
-        <div class='w-full max-w-xl overflow-hidden rounded-lg bg-gray-800 shadow-lg'>
+        <div class='w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-lg'>
           <div class='p-6'>
             <div class='flex justify-between'>
               <h1 class='mb-2 mt-2 text-center text-4xl font-bold text-indigo-400'>
@@ -62,6 +67,7 @@ function App() {
         </div>
       </div>
     </section>
+    </div>
   );
 }
 export default App;

@@ -1,4 +1,4 @@
-export default function Button({ color, text, onClick, isLong }) {
+export default function Buttons({ color, text, onClick, isLong }) {
   const long = isLong ? 'w-full' : '';
   return (
     <button

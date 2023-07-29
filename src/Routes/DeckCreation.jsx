@@ -101,7 +101,7 @@ function App() {
   };
 
   return (
-    <section class="flex h-screen flex-col justify-center bg-gray-900">
+    <section class="flex h-screen flex-col justify-center">
       {isOpen ? (
         <ReactModal
           className="flex items-center justify-center h-screen"

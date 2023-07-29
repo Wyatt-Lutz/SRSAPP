@@ -26,7 +26,6 @@ export default function App() {
   const servKey = getServKey();
 
   const { register, handleSubmit } = useForm();
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export default function App() {
         setTimeout(() => {
           setLoading(false);
           navigate('/decks');
-        }, 600);
+        }, 440);
       })
       .catch((error) => {
         console.log(error.code + ' ' + error.message);
