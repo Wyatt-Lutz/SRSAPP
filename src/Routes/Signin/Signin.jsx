@@ -88,10 +88,10 @@ export default function App() {
 
       {!loading && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0'>
-            <div className='bg-gray-700 rounded-lg sm:max-w-md md:mt-0 xl:p-0 shadow-2xl'>
-              <div className='space-y-4 p-6 sm:p-8 md:space-y-6'>
-                <h1 className='text-3xl font-bold text-indigo-400'>
+          <div className='mx-auto flex flex-col items-center justify-center h-screen'>
+            <div className='bg-gray-700 rounded-lg max-w-md shadow-2xl'>
+              <div className='space-y-4 p-8'>
+                <h1 className='text-3xl mb-6 font-bold text-indigo-400'>
                   Sign in to Your Account
                 </h1>
 
