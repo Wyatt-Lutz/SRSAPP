@@ -95,8 +95,12 @@ function App() {
   }
 
   function handleTextChange(index, side, event) {
+    if (index < 0 || index >= textFields.length) {
+      console.log('error on handleTextChange');
+      return;
+    }
     const newFields = [...textFields];
-    side == 1
+    side === 1
       ? (newFields[index].frontText = event.target.value)
       : (newFields[index].backText = event.target.value);
     setTextFields(newFields);
