@@ -100,14 +100,16 @@ function App() {
       return;
     }
     const newFields = [...textFields];
-    side === 1
-      ? (newFields[index].frontText = event.target.value)
-      : (newFields[index].backText = event.target.value);
+    const wSide = side === 1 ? 'frontText' : 'backText';
+
+    newFields[index][wSide] = event.target.value;
+  
     setTextFields(newFields);
   }
 
   async function handleSave(index, event) {
     event.preventDefault();
+
 
     setIsEdit((prev) => {
       const newState = [...prev];
@@ -117,6 +119,7 @@ function App() {
 
     setCards((prev) => {
       const newCards = [...prev];
+    
       newCards[index].frontText = textFields[index].frontText;
       newCards[index].backText = textFields[index].backText;
       return newCards;

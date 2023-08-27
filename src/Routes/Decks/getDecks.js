@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { collection, query, onSnapshot, doc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 
 export function fetchDecks(userId) {
   const [decks, setDecks] = useState([]);
 
   useEffect(() => {
+
     const decksRef = collection(db, 'users', userId, 'decks');
     const decksQuery = query(decksRef);
 
