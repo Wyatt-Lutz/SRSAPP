@@ -12,7 +12,7 @@
   "dependencies": {
     "@chakra-ui/modal": "^2.3.0",
     "@chakra-ui/react": "^2.8.0",
-    "@rsuite/icons": "^1.0.2",
+    "@rsuite/icons": "^1.0.3",
     "atob": "^2.1.2",
     "base64url": "^3.0.1",
     "btoa": "^1.2.1",
