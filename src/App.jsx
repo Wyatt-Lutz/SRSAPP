@@ -25,7 +25,7 @@ const App = () => {
   return (
     <Profiler id="App">
       <BrowserRouter>
-        
+        <Layout />
           <Suspense>
             <Routes>
               <Route path="/" element={<Signin />} />

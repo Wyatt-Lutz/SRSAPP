@@ -58,14 +58,11 @@ function App() {
         </div>
       ))}
     </div>
-    
-    
   </div>
+</div>
+    
+    
 
-      <Drawer />
-  
-    
-  </div>
   
 
   );

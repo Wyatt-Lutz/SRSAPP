@@ -17,8 +17,11 @@ export default function Drawer() {
   }
 
   return (
-    <div className='ring'>
-      <div className="ring fixed inset-0 bg-black bg-opacity-0"></div>
+    <div>
+      {isOpen && (
+        <div className="ring fixed inset-0 bg-black opacity-20" onClick={handleClick}>Hello</div>
+      )}
+      
       <div
         className={`rounded-lg transition-all duration-500 fixed left-1/2 bottom-2 w-1/2 h-32 bg-gray-700 transform -translate-x-1/2 ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
