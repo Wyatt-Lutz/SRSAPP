@@ -6,7 +6,7 @@ Signin:
     - Make pass and user state vars into one userData var
 
 Decks:
-    - The unfinished Decks noti displays even when the last deck was finished (might just get rid of the whole thing)
+    - Show how many cards are due for each deck 
 
 DeckEditation:
     - Try to optimize the redeclaration of textFields in the createNewCard and handleDelete functions
@@ -18,10 +18,21 @@ DeckEditation:
 DeckCreation:
     - Check if created card is similar to one already existing => warn user if true
     - Make sure user cant put in 3 trillion cards or whatever
-    - Make the current cards scrollable
+    - Reimplement currents cards in deck
+    - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
+
+Cards:
+
+
+Profile:
     
 
 App:
-    - Add a wait time in between when compoennt mounts and when dom displays stuff so it can check whether there is a signed in unsupported 
+    - Anytime a component mounts or whatver check if user is signed in through firebase thing
     - Fix user persistance 
-    - Find out a way to check if user is signed in efficiently throughout the whole site instead of checked in each component.
+
+
+
+
+
+

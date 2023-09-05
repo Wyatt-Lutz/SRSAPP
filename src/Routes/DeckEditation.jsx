@@ -144,7 +144,7 @@ function App() {
         isOpen={isOpen}
         onRequestClose={() => setIsOpen(false)}
       >
-        <div className="bg-gray-700 p-8 rounded-lg shadow-lg w-2/4 h-1/3 flex flex-col flex-items-center justify-center">
+        <div className="bg-gray-600 p-8 rounded-lg shadow-lg w-2/4 h-1/3 flex flex-col flex-items-center justify-center">
           <label class="text-2xl mb-2 block font-semibold text-indigo-300">
             Front
           </label>
@@ -175,7 +175,7 @@ function App() {
       </ReactModal>
 
       <div class="flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0">
-        <div class="w-full max-w-xl overflow-hidden rounded-lg bg-gray-800 shadow-lg">
+        <div class="w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-lg">
           <div class="p-6">
             <div class="flex justify-between">
               <h1 class="mb-2 mt-2 text-center text-4xl font-bold text-indigo-400">
@@ -184,19 +184,19 @@ function App() {
             </div>
 
             {cards.map((card, index) => (
-              <div key={card.id} class="mb-7 rounded-lg bg-gray-700">
+              <div key={card.id} class="mb-7 rounded-lg bg-gray-600">
                 <div class="p-4">
                   <div>
                     {isEditing[index] ? (
                       <div class="flex flex-col">
                         <input
-                          class="mb-4 font-bold w-full appearance-none rounded border border-gray-600 bg-gray-700 py-2 px-3 text-2xl text-indigo-400"
+                          class="mb-4 font-bold w-full appearance-none rounded border border-gray-500 bg-gray-600 py-2 px-3 text-2xl text-indigo-400"
                           type="text"
                           value={textFields[index].frontText}
                           onChange={(e) => handleTextChange(index, 1, e)}
                         ></input>
                         <input
-                          class="mb-4 font-bold w-full appearance-none rounded border border-gray-600 bg-gray-700 py-2 px-3 text-lg text-white"
+                          class="mb-4 font-bold w-full appearance-none rounded border border-gray-500 bg-gray-600 py-2 px-3 text-lg text-white"
                           type="text"
                           value={textFields[index].backText}
                           onChange={(e) => handleTextChange(index, 2, e)}
@@ -209,11 +209,11 @@ function App() {
                         </button>
                       </div>
                     ) : (
-                      <div class="flex flex-col">
-                        <div class="mb-5 ml-3 text-2xl font-bold text-indigo-400">
+                      <div class="flex flex-col font-bold text-2xl ml-3">
+                        <div class="mb-5 font-bold text-indigo-400">
                           {card.frontText}
                         </div>
-                        <div class="mb-3 ml-3 flex text-white font-bold text-lg">
+                        <div class="mb-3 text-white">
                           {card.backText}
                         </div>
                         <div class="flex justify-between">
