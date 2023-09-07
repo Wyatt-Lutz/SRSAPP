@@ -41,29 +41,26 @@ export default function App() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col items-center justify-center h-screen'>
           <div className='bg-gray-700 rounded-lg max-w-md shadow-2xl'>
-            <div className='p-8'>
+            <div className='p-8 space-y-6'>
               <h1 className='font-bold text-indigo-400 text-3xl'>
                 Create an Account
               </h1>
+              <Input register={register} name='Email' />
 
-              <div className='space-y-6'>
-                <Input register={register} name='Email' />
+              <Input register={register} name='Username' />
 
-                <Input register={register} name='Username' />
+              <Input register={register} name='Password' type='password' />
 
-                <Input register={register} name='Password' type='password' />
-
-                <div className='flex justify-between items-center'>
-                  <a
-                    class='font-bold text-indigo-300 hover:text-indigo-400'
-                    href='/'
-                  >
-                    Signin
-                  </a>
-                </div>
-
-                <Button color='indigo' text='Signup' isLong={true} />
+              <div className='flex justify-between items-center'>
+                <a
+                  class='font-bold text-indigo-300 hover:text-indigo-400'
+                  href='/'
+                >
+                  Signin
+                </a>
               </div>
+
+              <Button color='indigo' text='Signup' isLong={true} />
             </div>
           </div>
         </div>

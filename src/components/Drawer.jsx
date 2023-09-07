@@ -2,92 +2,69 @@ import React, { useState } from 'react';
 
 export default function Drawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [text, setText] = useState('Open');
+
+
 
   function handleClick() {
-    const currentText = text;
-    setText(currentText);
     setIsOpen(!isOpen);
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setText(isOpen ? 'Open' : 'Close');
-      setIsTransitioning(false);
-    }, 420);
   }
 
   return (
     <div>
       {isOpen && (
-        <div className="ring fixed inset-0 bg-black opacity-20" onClick={handleClick}>Hello</div>
+        <div className="fixed inset-0 bg-black opacity-20" onClick={handleClick}>Hello</div>
       )}
-      
-      <div
-        className={`rounded-lg transition-all duration-500 fixed left-1/2 bottom-2 w-1/2 h-32 bg-gray-700 transform -translate-x-1/2 ${
-          isOpen ? 'translate-y-0' : 'translate-y-full'
-        }`}
-      >
-        <div className="flex items-center justify-between p-2">
-          <div className="ring">Hello</div>
-        </div>
-      </div>
 
-      <div
-        className={`left-1/2 transform transition-all duration-500 -translate-x-1/2 absolute group ${
-          isOpen ? 'translate-y-0 bottom-36' : 'translate-y-full bottom-24'
-        }`}
-      >
-        <button
-          className={`transition ease-in-out flex flex-col items-center  ${
-            isOpen && !isTransitioning && 'hover:translate-y-2 px-4'
-          } ${!isOpen && !isTransitioning && 'hover:-translate-y-3 px-4'} }`}
-          onClick={handleClick}
+        <div
+          className={`rounded-lg transition-all border-4 border-gray-500 duration-500 fixed left-0 top-1/2 mx-2 w-24 h-1/5 bg-gray-700 transform -translate-y-1/2  ${
+            isOpen ? '-translate-y-8' : 'translate-y-0 opacity-0'
+          }`}
         >
-          <div className="text-2xl font-bold py-1 opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-500">
-            {text}
+          <div className="flex items-center justify-between p-2">
+            <div>text</div>
           </div>
-          {isOpen ? (
-            <svg
-              width="44"
-              height="44"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.75745 10.5858L9.17166 9.17154L12.0001 12L14.8285 9.17157L16.2427 10.5858L12.0001 14.8284L7.75745 10.5858Z"
-                fill="currentColor"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z"
-                fill="currentColor"
-              />
-            </svg>
-          ) : (
-            <svg
-              className=""
-              width="44"
-              height="44"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M14.8285 14.8284L16.2427 13.4142L12.0001 9.17161L7.75745 13.4142L9.17166 14.8285L12.0001 12L14.8285 14.8284Z"
-                fill="currentColor"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12ZM12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z"
-                fill="currentColor"
-              />
-            </svg>
-          )}
-        </button>
-      </div>
+        </div>
+
+
+          <button
+            className={`transition left-0 transform duration-500 mx-3 top-1/2 -translate-y-1/2 absolute ease-in-out flex flex-col items-center px-4  ${
+              isOpen && '-translate-y-24'
+            } ${!isOpen && 'translate-y-0'} }`}
+            onClick={handleClick}
+          >
+
+            
+              <svg
+                width="60"
+                height="60"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 6.9834C7.44772 6.9834 7 7.43111 7 7.9834C7 8.53568 7.44772 8.9834 8 8.9834H16C16.5523 8.9834 17 8.53568 17 7.9834C17 7.43111 16.5523 6.9834 16 6.9834H8Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M7 12C7 11.4477 7.44772 11 8 11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H8C7.44772 13 7 12.5523 7 12Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M8 15.017C7.44772 15.017 7 15.4647 7 16.017C7 16.5693 7.44772 17.017 8 17.017H16C16.5523 17.017 17 16.5693 17 16.017C17 15.4647 16.5523 15.017 16 15.017H8Z"
+                  fill="currentColor"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                  fill="currentColor"
+                />
+              </svg>
+          </button>
+      
+        
+
+
     </div>
   );
 }
