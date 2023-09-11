@@ -4,6 +4,7 @@ Signup:
 
 Signin:
     - Make pass and user state vars into one userData var
+    - If singin but password wrong or email wrong, loading overlay still shows, and app doesnt do anything else
 
 Decks:
     - Show how many cards are due for each deck 

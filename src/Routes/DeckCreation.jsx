@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  getDoc,
-  collection,
-  doc,
-  setDoc,
-  updateDoc, arrayUnion,
-} from 'firebase/firestore';
+import React, { useState } from 'react';
+import { getDoc, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import ReactModal from 'react-modal';
 import { db, auth, app } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +11,7 @@ ReactModal.setAppElement('#root');
 //xX8%*c8T!Kc$5C%
 function App() {
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [currIndex, setCurrIndex] = useState(0);
   const { register, handleSubmit } = useForm();
 
@@ -29,7 +23,7 @@ function App() {
 
   
   const guid = () => {
-    let s4 = () => {
+    const s4 = () => {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
             .substring(1);
@@ -40,10 +34,6 @@ function App() {
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), localID);
 
 
-
-  useEffect(() => {
-    
-  }, []);
 
 
 
@@ -61,14 +51,12 @@ function App() {
       consecGood: 0,
       currIndex: currIndex,
       lapsedStartingInterval: 0,
-
     };
 
 
     const snap = await getDoc(docRef);
     
     if (snap.exists()) {
-      //const currCardData = snap.data().cards;
       await updateDoc(docRef, {
         cards: arrayUnion(newCard),
       });
@@ -76,15 +64,11 @@ function App() {
     } else {
       console.error('deck doesnt exist');
     }
-
-
   }
 
   function finishDeck() {
     navigate('/decks');
   }
-
-  
 
   const onNameSubmit = async (data) => {
     setIsOpen(false);
@@ -96,7 +80,6 @@ function App() {
   };
 
   const onCardSubmit = (data) => {
-    
     const parsedData = JSON.parse(JSON.stringify(data));
     const front = parsedData.FrontText;
     const back = parsedData.BackText;
@@ -104,76 +87,49 @@ function App() {
   }
 
   return (
-    <section class="flex h-screen flex-col justify-center">
+    <section className="flex h-screen flex-col justify-center">
       {isOpen ? (
         <ReactModal
           className="flex items-center justify-center h-screen"
           isOpen={isOpen}
         >
-          
-          <div class="flex h-1/4 w-2/5 flex-col items-center justify-center rounded-lg bg-gray-700 p-8 shadow-lg">
+          <div className="flex h-1/4 w-2/5 flex-col items-center justify-center rounded-lg bg-gray-700 p-8 shadow-lg">
             <form onSubmit={handleSubmit(onNameSubmit)}>
-              <Input register={register} name='DeckName' />
-
-              <Button color='indigo' text='continue' isLong={true} />
-
+              <Input register={register} name='DeckName' placeholder="Deck Name"/>
+              <Button color='indigo' text='Continue' isLong={true} />
             </form>
-
           </div>
         </ReactModal>
       ) : null}
+
+
+
       {isOpen ? null : (
-        <div>
-
-          <div class="flex items-center justify-center">
-            <div class="flex flex-col w-1/3">
-              <div class="space-y-4 rounded-lg bg-gray-700 p-6 shadow">
-                <h1 class="text-3xl font-bold text-white">Create a Card</h1>
-       
-                  <form  onSubmit={handleSubmit(onCardSubmit)}className="space-y-6">
-                      <Input register={register} name='FrontText' />
-                      <Input register={register} name="BackText" />
-                      <div className='flex justify-between '>
-                      <Button color='indigo' text='Add Card' />
-                      
-
-                      </div>
-
-      
-
-
-                  </form>
-                  <Button color='indigo' text='Finish Deck' onClick={finishDeck} />
-                  <Button color='red' text="Cancel" onClick={finishDeck} />
-    
-              </div>
-            </div>
-            {/*
-            <div class="p-4 m-4">
-              <h1 class="text-2xl font-bold text-indigo-400">Current Cards</h1>
-              {tempCardData.map((card, index) => (
-                <div className="grid space-y-4 p-6">
-                  <div
-                    key={index}
-                    className="rounded-lg border border-gray-700 bg-gray-800 shadow"
-                  >
-                    <div className="space-y-6 p-4">
-                      <div>
-                        <p className="text-2xl font-bold text-indigo-400">
-                          {card.frontText}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-l font-bold text-white">
-                          {card.backText}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+        <div className="flex items-center justify-center">
+          <div className="flex flex-col">
+            <div className="rounded-lg bg-gray-700 p-6 shadow-2xl">
+              
+              <form onSubmit={handleSubmit(onCardSubmit)} className='space-y-4' >
+                <div className='flex justify-between'>
+                  <div className="text-3xl font-bold text-white">Create a Card</div>
+          
+                  <Button color='indigo' text='Add Card'/>
                 </div>
-              ))}
+                <div className="space-y-6">
+                  <Input register={register} name='FrontText' placeholder="Front Text" />
+                  <Input register={register} name="BackText" placeholder="Back Text" />
+
+                </div>
+              </form>
+
+              <div className='space-y-10'>
+                <Button color='red' text="Cancel" onClick={finishDeck} />
+                <Button color='indigo' text='Finish Deck' onClick={finishDeck} />
+
+
+              </div>
+
             </div>
-              */}
           </div>
         </div>
       )}

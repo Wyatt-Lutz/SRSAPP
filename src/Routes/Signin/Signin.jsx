@@ -90,12 +90,12 @@ export default function App() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mx-auto flex flex-col items-center justify-center h-screen'>
             <div className='bg-gray-700 rounded-lg max-w-md shadow-2xl'>
-              <div className='space-y-6 p-8'>
-                <h1 className='text-3xl font-bold text-indigo-400'>
-                  Sign in to Your Account
-                </h1>
+              <div className='p-8'>
 
                 <div className='space-y-6'>
+                  <div className='text-3xl font-bold pb-4 text-indigo-400'>
+                    Sign in to Your Account
+                  </div>
                   <Input register={register} name='Email' />
                   <Input register={register} name='Password' type='password' />
 
@@ -119,7 +119,7 @@ export default function App() {
                   </div>
                   <Button color='indigo' text='Sign in' isLong={true} />
                 </div>
-                <div className='pt-3 flex justify-center'>
+                <div className='pt-5 flex justify-center'>
                   <a
                     href='/'
                     className='font-bold text-indigo-300 hover:text-indigo-400'

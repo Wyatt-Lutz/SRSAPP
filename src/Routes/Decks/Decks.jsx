@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { auth, app } from '../../firebase.js';
 import { useNavigate } from 'react-router-dom';
 import Buttons from '../../components/Buttons.jsx';
 import { fetchDecks, deleteDeck } from './getDecks.js';
-import Drawer from '../../components/Drawer.jsx';
 
 function App() {
   const Button = React.memo(Buttons);
@@ -15,7 +14,7 @@ function App() {
   const decks = fetchDecks(user.uid);
 
   return (
-<div className="flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0">
+<div className="flex flex-col items-center justify-center px-6 py-8 h-screen">
   <div className="w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-2xl">
     <div className="p-6">
       <div className="flex justify-between">
@@ -28,7 +27,7 @@ function App() {
           onClick={() => navigate('/decks/create')}
         />
       </div>
-      <div className="mb-6"></div>
+      <div className="mb-3"></div>
       {decks.map((deck) => (
         <div key={deck.id} className="mb-7 rounded-lg bg-gray-600">
           <div className="p-4">
