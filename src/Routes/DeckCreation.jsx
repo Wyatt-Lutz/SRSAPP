@@ -3,7 +3,8 @@ import { getDoc, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase
 import ReactModal from 'react-modal';
 import { db, auth, app } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
-import Inputs from '../components/Inputs.jsx';
+import Inputs from '../components/inputs/Inputs.jsx';
+import ParagraphInputs from '../components/inputs/ParagraphInputs.jsx';
 import Buttons from '../components/Buttons.jsx';
 import { useForm } from 'react-hook-form';
 
@@ -20,6 +21,8 @@ function App() {
 
   const Button = React.memo(Buttons);
   const Input = React.memo(Inputs);
+  const ParagraphInput = React.memo(ParagraphInputs);
+
 
   
   const guid = () => {
@@ -90,11 +93,12 @@ function App() {
     <section className="flex h-screen flex-col justify-center">
       {isOpen ? (
         <ReactModal
-          className="flex items-center justify-center h-screen"
+          className="flex items-center justify-center h-screen bg-gray-500"
           isOpen={isOpen}
         >
-          <div className="flex h-1/4 w-2/5 flex-col items-center justify-center rounded-lg bg-gray-700 p-8 shadow-lg">
-            <form onSubmit={handleSubmit(onNameSubmit)}>
+          <div className="flex flex-col items-center justify-center rounded-lg bg-gray-700 w-full max-w-md space-y-6 py-8 shadow-lg">
+            <h1 className='font-bold text-3xl text-indigo-400'>Enter Deck Name</h1>
+            <form className="space-y-4 px-6" onSubmit={handleSubmit(onNameSubmit)}>
               <Input register={register} name='DeckName' placeholder="Deck Name"/>
               <Button color='indigo' text='Continue' isLong={true} />
             </form>
@@ -116,15 +120,16 @@ function App() {
                   <Button color='indigo' text='Add Card'/>
                 </div>
                 <div className="space-y-6">
-                  <Input register={register} name='FrontText' placeholder="Front Text" />
-                  <Input register={register} name="BackText" placeholder="Back Text" />
+                  <ParagraphInput register={register} name='FrontText' placeholder="Front Text" />
+                  <ParagraphInput register={register} name="BackText" placeholder="Back Text" />
 
                 </div>
               </form>
-
-              <div className='space-y-10'>
-                <Button color='red' text="Cancel" onClick={finishDeck} />
+              
+              <div className='space-y-6 space-x-[150px]'>
+                
                 <Button color='indigo' text='Finish Deck' onClick={finishDeck} />
+                <Button color='red' text="Cancel" onClick={finishDeck} />
 
 
               </div>

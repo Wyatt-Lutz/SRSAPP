@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form';
 import { issueCookie } from './cookies.js';
 import { decodeCookie } from './cookies.js';
 
-import Inputs from '../../components/Inputs.jsx';
+import Inputs from '../../components/inputs/Inputs.jsx';
+import PasswordInputs from '../../components/inputs/PasswordInputs.jsx';
 import Buttons from '../../components/Buttons.jsx';
 import LoadingOverlays from '../../components/LoadingOverlays.jsx';
 
@@ -21,6 +22,7 @@ export default function App() {
 
   const Button = React.memo(Buttons);
   const Input = React.memo(Inputs);
+  const PasswordInput = React.memo(PasswordInputs);
   const checkboxRef = useRef(false);
   const isMounted = useRef(false);
   const servKey = getServKey();
@@ -54,7 +56,6 @@ export default function App() {
   }
 
   const onSubmit = (data) => {
-    setLoading(true);
     const parsedData = JSON.parse(JSON.stringify(data));
     const email = parsedData.Email;
     const password = parsedData.Password;
@@ -69,6 +70,7 @@ export default function App() {
   function signIn(email, password) {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+        setLoading(true);
         (async () => {
           await setPersistence(auth, browserLocalPersistence);
         })();
@@ -89,15 +91,15 @@ export default function App() {
       {!loading && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mx-auto flex flex-col items-center justify-center h-screen'>
-            <div className='bg-gray-700 rounded-lg max-w-md shadow-2xl'>
+            <div className='bg-gray-700 rounded-lg w-[27rem] shadow-2xl'>
               <div className='p-8'>
 
                 <div className='space-y-6'>
                   <div className='text-3xl font-bold pb-4 text-indigo-400'>
                     Sign in to Your Account
                   </div>
-                  <Input register={register} name='Email' />
-                  <Input register={register} name='Password' type='password' />
+                  <Input register={register} name='Email' placeholder="Email" />
+                  <PasswordInput register={register} name='Password' placeholder="Password" />
 
                   <div className='flex items-center justify-between'>
                     <label className='flex items-center'>

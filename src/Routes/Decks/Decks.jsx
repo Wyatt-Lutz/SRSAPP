@@ -28,6 +28,9 @@ function App() {
         />
       </div>
       <div className="mb-3"></div>
+      {decks.length === 0 && (
+        <div>You don't have any decks created🤣🤣🤣</div>
+      )}
       {decks.map((deck) => (
         <div key={deck.id} className="mb-7 rounded-lg bg-gray-600">
           <div className="p-4">

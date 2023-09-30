@@ -5,11 +5,13 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { db, auth, app } from '../firebase.js';
 import Buttons from '../components/Buttons.jsx';
-import Inputs from '../components/Inputs.jsx';
+import Inputs from '../components/inputs/Inputs.jsx';
+import PasswordInputs from '../../components/inputs/PasswordInputs.jsx';
 
 export default function App() {
   const Button = React.memo(Buttons);
   const Input = React.memo(Inputs);
+  const PasswordInput = React.memo(PasswordInputs);
 
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default function App() {
   const onSubmit = (data) => {
     const parsedData = JSON.parse(JSON.stringify(data));
     const email = parsedData.Email;
-    const username = parsedData.Username;
+    //const username = parsedData.Username;
     const password = parsedData.Password;
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -26,7 +28,7 @@ export default function App() {
         const user = userCredential.user;
         setDoc(doc(db, 'users', user.uid), {
           email: email,
-          username: username,
+          //username: username,
           userId: user.uid,
         });
         navigate('/decks');
@@ -39,21 +41,25 @@ export default function App() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='flex flex-col items-center justify-center h-screen'>
-          <div className='bg-gray-700 rounded-lg max-w-md shadow-2xl'>
+        <div className='flex flex-col justify-center items-center h-screen'>
+          <div className='bg-gray-700 rounded-lg w-[27rem] shadow-2xl'>
             <div className='p-8 space-y-6'>
               <h1 className='font-bold text-indigo-400 text-3xl'>
                 Create an Account
               </h1>
-              <Input register={register} name='Email' />
+              <Input register={register} name='Email' placeholder="Email" />
 
-              <Input register={register} name='Username' />
+              {/*<Input register={register} name='Username' placeholder={} /> */}
 
-              <Input register={register} name='Password' type='password' />
+              
+              <div>
+                <PasswordInput register={register} name='Password' placeholder="Password" />
+                <p className="text-gray-500 text-sm italic">*Must be at least 6 characters</p>
+              </div>
 
               <div className='flex justify-between items-center'>
                 <a
-                  class='font-bold text-indigo-300 hover:text-indigo-400'
+                  className='font-bold text-indigo-300 hover:text-indigo-400'
                   href='/'
                 >
                   Signin
