@@ -29,7 +29,7 @@ export default function Drawer() {
 
 
   return (
-    <div>
+    <div >
       {isOpen && (
         <div
           className="fixed inset-0 bg-black opacity-20"

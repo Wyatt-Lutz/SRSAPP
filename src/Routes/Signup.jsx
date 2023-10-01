@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 import { db, auth, app } from '../firebase.js';
 import Buttons from '../components/Buttons.jsx';
 import Inputs from '../components/inputs/Inputs.jsx';
-import PasswordInputs from '../../components/inputs/PasswordInputs.jsx';
+import PasswordInputs from '../components/inputs/PasswordInputs.jsx';
+import { toast } from 'react-toastify';
 
 export default function App() {
   const Button = React.memo(Buttons);
@@ -35,6 +36,8 @@ export default function App() {
       })
       .catch((error) => {
         console.error(error.code + ' ' + error.message);
+        toast.error('Error creating account.')
+
       });
   };
 
