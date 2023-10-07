@@ -1,10 +1,8 @@
 Signup:
-    - Get this error when typing in textboxes: 'Feature Policy: Skipping unsupported feature name “publickey-credentials-get”.'
-    - Throws error becuase using 'class' when should be using 'className'
+    - Add email verification (maybe)
 
 Signin:
-    - Make pass and user state vars into one userData var
-    - If singin but password wrong or email wrong, loading overlay still shows, and app doesnt do anything else
+
 
 Decks:
     - Show how many cards are due for each deck 
@@ -23,6 +21,14 @@ DeckCreation:
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
 
 Cards:
+
+ButtonComp:
+    - Add active and hover css
+
+react-hook-form:
+    data.email
+    data.password
+    insetad of stringifying it
 
 
 Profile:

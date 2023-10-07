@@ -1,13 +1,10 @@
 import React from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+
 import { doc, setDoc } from 'firebase/firestore';
-import { useForm } from 'react-hook-form';
-import { db, auth, app } from '../firebase.js';
-import Buttons from '../components/Buttons.jsx';
-import Inputs from '../components/inputs/Inputs.jsx';
-import PasswordInputs from '../components/inputs/PasswordInputs.jsx';
-import { toast } from 'react-toastify';
+
+
+import { useNavigate, Inputs, PasswordInputs, Buttons, useForm, toast, db, auth, app } from '../imports.js';
 
 export default function App() {
   const Button = React.memo(Buttons);

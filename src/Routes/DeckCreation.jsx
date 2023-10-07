@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { getDoc, collection, doc, setDoc, updateDoc, arrayUnion, query, where, getDocs } from 'firebase/firestore';
-import ReactModal from 'react-modal';
-import { db, auth, app } from '../firebase.js';
-import { useNavigate } from 'react-router-dom';
-import Inputs from '../components/inputs/Inputs.jsx';
-import ParagraphInputs from '../components/inputs/ParagraphInputs.jsx';
-import Buttons from '../components/Buttons.jsx';
-import { useForm } from 'react-hook-form';
-import { toast, ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+
+import { useNavigate, Inputs, ParagraphInputs, Buttons, useForm, toast, db, auth, app } from '../imports.js';
 
 
 
-ReactModal.setAppElement('#root');
+
+
+
 //xX8%*c8T!Kc$5C%
 function App() {
 
@@ -47,6 +42,27 @@ function App() {
 
   async function createCard(front, back) {
 
+    const snap = await getDoc(docRef);
+
+    if(!snap.exists() ) {
+      toast.error('The deck doesn\'t exist.');
+      return;
+    }
+
+    
+
+    const docData = snap.data();
+    if (docData.cards) {
+      const isDupe = docData.cards.some((card) => card.frontText === front && card.backText === back);
+      if (isDupe) {
+        toast.error('A duplicate card already exists.');
+        
+        return;
+      }
+    }
+
+  
+
     const newCard = {
       frontText: front,
       backText: back,
@@ -60,32 +76,14 @@ function App() {
       lapsedStartingInterval: 0,
     };
     
-    const snap = await getDoc(docRef);
 
-    if(!snap.exists() ) {
-      toast.error('The deck doesn\'t exist.');
-      return;
-    }
-    const docData = snap.data();
-    if (docData.cards) {
-      const isDupe = docData.cards.some((card) => card.frontText === front && card.backText === back);
-      if (isDupe) {
-        toast.error('A duplicate card already exists.');
-        return;
-      }
-    }
-
-    reset({ FrontText: '', BackText: '' });
 
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
     setCurrIndex(currIndex + 1);
  
-   
-
-
-
+    reset({ FrontText: '', BackText: '' });
   }
 
   function finishDeck() {
@@ -112,6 +110,7 @@ function App() {
 
   return (
     <section className="flex h-screen flex-col justify-center">
+      
       {isOpen ? (
         <div className="flex items-center justify-center h-screen bg-transparent" isOpen={isOpen}>
             <div className="flex flex-col items-center justify-center rounded-lg bg-gray-700 w-full max-w-md space-y-6 py-8 shadow-lg">
@@ -148,19 +147,8 @@ function App() {
                 </div>
                 <Button color='indigo' text='Add Card'/>
               </form>
-              <ToastContainer
-          position="bottom-center"
-          autoClose={2500}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
 
+       
             </div>
           </div>
         </div>

@@ -8,8 +8,7 @@ export default function Drawer() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const drawerButtonStyle =
-    "text-white font-bold hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg transition duration-300";
+  const drawerButtonStyle = "text-white font-bold hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg transition duration-300";
 
   function handleClick() {
     setIsOpen(!isOpen);
