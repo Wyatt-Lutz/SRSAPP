@@ -13,7 +13,6 @@ const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));
 const App = () => {
   return (
     <Profiler id="App">
-      <BrowserRouter>
         <Layout />
           <Suspense>
             <Routes>
@@ -28,7 +27,6 @@ const App = () => {
               </Route>
             </Routes>
           </Suspense>
-      </BrowserRouter>
     </Profiler>
   );
 };

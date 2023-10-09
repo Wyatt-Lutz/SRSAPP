@@ -1,5 +1,5 @@
 
-export default function Inputs({ register, name, placeholder }) {
+export default function Input({ register, name, placeholder }) {
 
     
 

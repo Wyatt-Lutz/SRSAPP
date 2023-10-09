@@ -1,5 +1,5 @@
 
-export default function ParagraphInputs({ register, name, placeholder, defaultValue }) {
+export default function ParagraphInput({ register, name, placeholder, defaultValue }) {
 
     
 

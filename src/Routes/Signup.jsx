@@ -4,21 +4,17 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 
-import { useNavigate, Inputs, PasswordInputs, Buttons, useForm, toast, db, auth, app } from '../imports.js';
+import { useNavigate, Input, PasswordInput, Button, useForm, toast, db, auth, app } from '../imports.js';
 
 export default function App() {
-  const Button = React.memo(Buttons);
-  const Input = React.memo(Inputs);
-  const PasswordInput = React.memo(PasswordInputs);
+
 
   const navigate = useNavigate();
-
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
     const parsedData = JSON.parse(JSON.stringify(data));
     const email = parsedData.Email;
-    //const username = parsedData.Username;
     const password = parsedData.Password;
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -26,7 +22,6 @@ export default function App() {
         const user = userCredential.user;
         setDoc(doc(db, 'users', user.uid), {
           email: email,
-          //username: username,
           userId: user.uid,
         });
         navigate('/decks');

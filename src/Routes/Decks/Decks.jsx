@@ -1,11 +1,8 @@
 import React from 'react';
-import { auth, app } from '../../firebase.js';
-import { useNavigate } from 'react-router-dom';
-import Buttons from '../../components/Buttons.jsx';
 import { fetchDecks, deleteDeck } from './getDecks.js';
+import { auth, app, Button, useNavigate } from '../../imports.js';
 
 function App() {
-  const Button = React.memo(Buttons);
   const navigate = useNavigate();
   const user = auth.currentUser;
 

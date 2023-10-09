@@ -6,8 +6,8 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { db, auth, app } from '../firebase.js';
-import { useNavigate } from 'react-router-dom';
+
+import { db, auth, app, useNavigate } from '../imports.js';
 //xX8%*c8T!Kc$5C%
 
 function App() {
@@ -39,11 +39,7 @@ function App() {
     console.log('onMount useEffect run');
 
     async function fetchDecks() {
-      if (!user) {
-        console.error('Invalid User');
-        navigate('/');
-        return;
-      }
+
 
       const docSnap = await getDoc(docRef);
 
@@ -155,7 +151,7 @@ function App() {
 
       setCards((prev) => {
         const updatedCards = [...prev];
-        updatedCards[currentCard.currIndex] = updatedReviewCard;
+        updatedCards[currentCard.cardIndex] = updatedReviewCard;
         return updatedCards;
       });
       console.log(cards);
@@ -187,7 +183,7 @@ function App() {
 
       setCards((prev) => {
         const updatedCards = [...prev];
-        updatedCards[currentCard.currIndex] = updatedGradCard;
+        updatedCards[currentCard.cardIndex] = updatedGradCard;
         return updatedCards;
       });
     }

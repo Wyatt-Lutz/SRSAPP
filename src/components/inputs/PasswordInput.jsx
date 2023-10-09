@@ -1,5 +1,5 @@
 import { useState } from 'react';
-export default function PasswordInputs({ register, name, placeholder }) {
+export default function PasswordInput({ register, name, placeholder }) {
   const [isVis, setIsVis] = useState(false);
   
 

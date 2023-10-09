@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase.js';
+import React, { useState, useEffect } from "react";
+import { auth, useNavigate, db } from '../imports.js';
 import { signOut } from "firebase/auth";
+import { collection, query, onSnapshot, where } from 'firebase/firestore';
 
 
 export default function Drawer() {
@@ -17,12 +17,15 @@ export default function Drawer() {
   function signOutUser() {
     signOut(auth).then(() => {
       console.log('signout successful');
+      document.cookie = "rememberMeToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
       navigate('/');
     }).catch((error) => {
       console.error('signout failed: ' + error);
     });
     
   }
+
 
 
 

@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { doc, collection, getDoc, setDoc } from 'firebase/firestore';
+import { doc, collection, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 
-import { db, auth, app, useForm, toast, ParagraphInputs, Buttons, useNavigate, ReactModal } from '../imports.js';
+import { db, auth, app, useForm, toast, ParagraphInput, Button, useNavigate, ReactModal } from '../imports.js';
 
 ReactModal.setAppElement('#root');
 
 function App() {
   const [cards, setCards] = useState([]);
   const [isEditing, setIsEdit] = useState(Array(cards.length).fill(false));
-  const [textFields, setTextFields] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [newValues, setNewValues] = useState({ frontText: '', backText: '' });
 
   const navigate = useNavigate();
   const user = auth.currentUser;
@@ -19,15 +17,11 @@ function App() {
   const urlParams = new URLSearchParams(queryString);
   const deckId = urlParams.get('id');
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
-  const { register, handleSubmit } = useForm();
-  const Button = React.memo(Buttons);
-  const ParagraphInput = React.memo(ParagraphInputs);
+  const { register, handleSubmit, reset } = useForm();
+
 
 
   useEffect(() => {
-    if (!user) {
-      navigate('/');
-    }
 
     async function fetchData() {
       const docSnap = await getDoc(docRef);
@@ -35,16 +29,20 @@ function App() {
         console.error('deck not found');
         return;
       }
-
+  
       const deckData = docSnap.data();
       const cardsData = deckData.cards.map((card) => ({ frontText: card.frontText, backText: card.backText }));
       setCards(cardsData);
-
+  
     }
+
+
 
     
     fetchData();
   }, []);
+
+
 
 
   async function onEditSubmit (data, index) {
@@ -53,8 +51,6 @@ function App() {
 
     
     setCards((prev) => {
-  
-    
       prev[index].frontText = front;
       prev[index].backText = back;
       return [...prev];
@@ -74,22 +70,36 @@ function App() {
   }
 
   async function onNewCardSubmit (data) {
+    console.log('new card func ran');
     setIsOpen(false);
-    const newCard = {
-      frontText: data.frontText,
-      backText: data.backText,
-    }
-
+    reset({ frontText: '', backText: '' });
     const docSnap = await getDoc(docRef);
+    
     if (!docSnap.exists()) {
       console.error('deck not found');
       return;
     }
     const deckData = docSnap.data();
-    const newDeckData = [...deckData, newCard];
-    await setDoc(docRef, newDeckData, { merge: true });
 
-
+    
+    const newCard = {
+      frontText: data.frontText,
+      backText: data.backText,
+      isGraduated: false,
+      nextReview: Date.now(),
+      lastInterval: 60000,
+      lapses: 0,
+      isLeech: false,
+      consecGood: 0,
+      cardIndex: deckData.cards.length,
+      lapsedStartingInterval: 0,
+    };
+    setCards((prevCards) => [...prevCards, newCard]);
+    
+    
+    await updateDoc(docRef, {
+      cards: arrayUnion(newCard),
+    });
   }
 
   function handleEdit(index, bool) {
@@ -101,6 +111,7 @@ function App() {
   }
 
   async function handleDelete(index) {
+    console.log(index)
 
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -109,44 +120,16 @@ function App() {
     }
     const deckData = docSnap.data();
     const cardsData = deckData.cards.filter(
-      (cardIndex) => cardIndex !== index
+      (card) => card.cardIndex !== index
     );
     await setDoc(docRef, { cards: cardsData }, { merge: true });
 
+
     setCards(cardsData);
-    setTextFields(
-      cardsData.map((card) => ({
-        frontText: card.frontText,
-        backText: card.backText,
-      }))
-    );
-
 
 
   }
 
-  async function createNewCard() {
-    const newCardData = {
-      frontText: newValues.frontText,
-      backText: newValues.backText,
-    };
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const deckData = docSnap.data();
-      const newCardsData = [...deckData.cards, newCardData];
-      await setDoc(docRef, { cards: newCardsData }, { merge: true });
-      setCards(newCardsData);
-      setTextFields(
-        newCardsData.map((card) => ({
-          frontText: card.frontText,
-          backText: card.backText,
-        }))
-      ); //Can this be optimized?
-    } else {
-      console.error('deck not found');
-    }
-    setIsOpen(false);
-  }
 
   return (
     <section>
@@ -160,8 +143,8 @@ function App() {
                     <form onSubmit={handleSubmit(onNewCardSubmit)} className='space-y-4 flex flex-col' >
       
                       <div className="space-y-6">
-                        <ParagraphInput register={register} name='frontText' placeholder="Front Text" />
-                        <ParagraphInput register={register} name="backText" placeholder="Back Text" />
+                        <ParagraphInput register={register} defaultValue="" name='frontText' placeholder="Front Text" />
+                        <ParagraphInput register={register} defaultValue="" name="backText" placeholder="Back Text" />
       
                       </div>
                       <Button color='indigo' text='Add Card'/>
@@ -184,6 +167,7 @@ function App() {
             </div>
 
             {cards.map((card, index) => (
+            
               
               <div key={card.id} class="mb-7 rounded-lg bg-gray-600">
                 <div class="p-4">
@@ -229,7 +213,6 @@ function App() {
                             onClick={() => handleDelete(index)}
                             color="red"
                             text="Delete"
-                      
                           />
                         </div>
                       </div>

@@ -3,12 +3,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import Inputs from './components/inputs/Inputs.jsx';
-import ParagraphInputs from './components/inputs/ParagraphInputs.jsx';
-import PasswordInputs from './components/inputs/PasswordInputs.jsx';
-import Buttons from './components/Buttons.jsx';
+import Input from './components/inputs/Input.jsx';
+import ParagraphInput from './components/inputs/ParagraphInput.jsx';
+import PasswordInput from './components/inputs/PasswordInput.jsx';
+import Button from './components/Button.jsx';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
+import LoadingOverlays from './components/LoadingOverlays.jsx';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBu1ALA2a6W2CF_3GXhFCwL_yUSFare5qg',
@@ -26,5 +27,5 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 
-export { db, auth, app, useForm, toast, Inputs, ParagraphInputs, PasswordInputs, Buttons, useNavigate, ReactModal };
+export { db, auth, app, useForm, toast, Input, ParagraphInput, PasswordInput, Button, useNavigate, ReactModal, LoadingOverlays };
 

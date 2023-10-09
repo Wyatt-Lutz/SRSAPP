@@ -1,28 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { collection, getDoc, doc } from 'firebase/firestore';
 import {
   signInWithEmailAndPassword,
   setPersistence,
   browserLocalPersistence,
 } from 'firebase/auth';
-
-import { db, auth, app } from '../../firebase.js';
-import { useForm } from 'react-hook-form';
 import { issueCookie } from './cookies.js';
 import { decodeCookie } from './cookies.js';
-
-import Inputs from '../../components/inputs/Inputs.jsx';
-import PasswordInputs from '../../components/inputs/PasswordInputs.jsx';
-import Buttons from '../../components/Buttons.jsx';
-import LoadingOverlays from '../../components/LoadingOverlays.jsx';
+import { db, auth, app, useForm, toast, Input, ParagraphInput, PasswordInput, Button, useNavigate, ReactModal, LoadingOverlays } from '../../imports.js';
 
 export default function App() {
   const navigate = useNavigate();
 
-  const Button = React.memo(Buttons);
-  const Input = React.memo(Inputs);
-  const PasswordInput = React.memo(PasswordInputs);
+ 
   const checkboxRef = useRef(false);
   const isMounted = useRef(false);
   const servKey = getServKey();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getDoc, collection, doc, setDoc, updateDoc, arrayUnion, query, where, getDocs } from 'firebase/firestore';
 
-import { useNavigate, Inputs, ParagraphInputs, Buttons, useForm, toast, db, auth, app } from '../imports.js';
+import { useNavigate, Input, ParagraphInput, Button, useForm, toast, db, auth, app } from '../imports.js';
 
 
 
@@ -12,15 +12,13 @@ import { useNavigate, Inputs, ParagraphInputs, Buttons, useForm, toast, db, auth
 function App() {
 
   const [isOpen, setIsOpen] = useState(true);
-  const [currIndex, setCurrIndex] = useState(0);
+
   const { register, handleSubmit, reset } = useForm();
 
   const navigate = useNavigate();
   const user = auth.currentUser;
 
-  const Button = React.memo(Buttons);
-  const Input = React.memo(Inputs);
-  const ParagraphInput = React.memo(ParagraphInputs);
+
 
 
   
@@ -61,7 +59,7 @@ function App() {
       }
     }
 
-  
+    const currIndex = docData.cards ? docData.cards.length : 0;
 
     const newCard = {
       frontText: front,
@@ -72,7 +70,7 @@ function App() {
       lapses: 0,
       isLeech: false,
       consecGood: 0,
-      currIndex: currIndex,
+      cardIndex: currIndex,
       lapsedStartingInterval: 0,
     };
     
@@ -81,14 +79,11 @@ function App() {
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
-    setCurrIndex(currIndex + 1);
+
  
     reset({ FrontText: '', BackText: '' });
   }
 
-  function finishDeck() {
-    navigate('/decks');
-  }
 
   const onNameSubmit = async (data) => {
     setIsOpen(false);
@@ -136,7 +131,7 @@ function App() {
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
           
                   
-                  <Button color='indigo' text='Finish Deck' onClick={finishDeck} />
+                  <Button color='indigo' text='Finish Deck' onClick={() => navigate('/decks')} />
               </div>
               <form onSubmit={handleSubmit(onCardSubmit)} className='space-y-4 flex flex-col' >
 

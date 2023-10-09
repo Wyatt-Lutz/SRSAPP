@@ -2,12 +2,17 @@ Signup:
     - Add email verification (maybe)
 
 Signin:
+     - Check if its possible to use console or something to get the serv key because I have it as allow read on rules
+
+Drawer:
+    - When you click decks or profile, it should auto close and not open unless button proximity again, this fix may require rewriting more stuff
 
 
 Decks:
     - Show how many cards are due for each deck 
 
 DeckEditation:
+    - paragraphinputs default to no text when edit
     - Try to optimize the redeclaration of textFields in the createNewCard and handleDelete functions
     - Add check if there is text in textboxes when adding a card or else a empty card is created
     - Sometimes deleting a card doesnt work
