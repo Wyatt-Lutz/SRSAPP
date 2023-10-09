@@ -35,17 +35,22 @@ function App() {
               {deck.name}
             </h2>
             <div className="mb-2 flex items-center justify-around">
+            
+                
               <Button
                 color="indigo"
                 text="Study"
                 onClick={() => navigate(`/decks/study?id=${deck.id}`)}
               />
+        
+                <Button
+                  color='gray'
+                  text="Edit"
+                  onClick={() => navigate(`/decks/edit?id=${deck.id}`)}
+                />
+      
 
-              <Button
-                color="gray"
-                text="Edit"
-                onClick={() => navigate(`/decks/edit?id=${deck.id}`)}
-              />
+
 
               <Button
                 color="red"
