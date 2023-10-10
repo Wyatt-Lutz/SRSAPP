@@ -103,6 +103,10 @@ function App() {
 
   }
 
+  function onFinish() {
+    navigate('/decks');
+  }
+
   return (
     <section className="flex h-screen flex-col justify-center">
       
@@ -112,7 +116,9 @@ function App() {
               <h1 className='font-bold text-3xl text-indigo-400'>Enter Deck Name</h1>
               <form className="space-y-4 px-6" onSubmit={handleSubmit(onNameSubmit)}>
                 <Input register={register} name='DeckName' placeholder="Deck Name"/>
-                <Button color='indigo' text='Continue' isLong={true} />
+                <Button color="indigo" text="Continue" isLong={true} />
+                
+       
               </form>
             </div>
         </div>
@@ -131,7 +137,8 @@ function App() {
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
           
                   
-                  <Button color='indigo' text='Finish Deck' onClick={() => navigate('/decks')} />
+                  <Button color='indigo' text='Finish Deck' onClick={onFinish} />
+
               </div>
               <form onSubmit={handleSubmit(onCardSubmit)} className='space-y-4 flex flex-col' >
 

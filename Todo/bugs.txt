@@ -12,15 +12,9 @@ Decks:
     - Show how many cards are due for each deck 
 
 DeckEditation:
-    - paragraphinputs default to no text when edit
-    - Try to optimize the redeclaration of textFields in the createNewCard and handleDelete functions
-    - Add check if there is text in textboxes when adding a card or else a empty card is created
-    - Sometimes deleting a card doesnt work
     - While editing a card, then press edit on another card, you can have both edits open at same time
-    - Adding a card doesnt add other card data
 
 DeckCreation:
-    - Check if created card is similar to one already existing => warn user if true
     - Make sure user cant put in 3 trillion cards or whatever
     - Reimplement currents cards in deck
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
@@ -28,7 +22,7 @@ DeckCreation:
 Cards:
 
 ButtonComp:
-    - Add active and hover css
+    
 
 react-hook-form:
     data.email
@@ -40,8 +34,8 @@ Profile:
     
 
 App:
-    - Anytime a component mounts or whatver check if user is signed in through firebase thing
     - Fix user persistance 
+    - Add toasts when needed
 
 
 

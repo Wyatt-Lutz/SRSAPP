@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, Profiler } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout.jsx';
 
 const Signin = lazy(() => import('./Routes/Signin/Signin.jsx'));

@@ -46,8 +46,8 @@ function App() {
 
 
   async function onEditSubmit (data, index) {
-    const front = data.frontText;
-    const back = data.backText;
+    const front = data.editFrontText;
+    const back = data.editBackText;
 
     
     setCards((prev) => {
@@ -83,8 +83,8 @@ function App() {
 
     
     const newCard = {
-      frontText: data.frontText,
-      backText: data.backText,
+      frontText: data.createFrontText,
+      backText: data.createBackText,
       isGraduated: false,
       nextReview: Date.now(),
       lastInterval: 60000,
@@ -143,8 +143,8 @@ function App() {
                     <form onSubmit={handleSubmit(onNewCardSubmit)} className='space-y-4 flex flex-col' >
       
                       <div className="space-y-6">
-                        <ParagraphInput register={register} defaultValue="" name='frontText' placeholder="Front Text" />
-                        <ParagraphInput register={register} defaultValue="" name="backText" placeholder="Back Text" />
+                        <ParagraphInput register={register} defaultValue="" name='createFrontText' placeholder="Front Text" />
+                        <ParagraphInput register={register} defaultValue="" name="createBackText" placeholder="Back Text" />
       
                       </div>
                       <Button color='indigo' text='Add Card'/>
@@ -157,11 +157,11 @@ function App() {
       ) : null}
       
 
-      <div class="flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0">
-        <div class="w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-lg">
-          <div class="p-6">
-            <div class="flex justify-between">
-              <h1 class="mb-2 mt-2 text-center text-4xl font-bold text-indigo-400">
+      <div className="flex flex-col items-center justify-center px-6 py-8 md:min-h-screen lg:py-0">
+        <div className="w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-lg">
+          <div className="p-6">
+            <div className="flex justify-between">
+              <h1 className="mb-2 mt-2 text-center text-4xl font-bold text-indigo-400">
                 Edit Deck
               </h1>
             </div>
@@ -169,21 +169,21 @@ function App() {
             {cards.map((card, index) => (
             
               
-              <div key={card.id} class="mb-7 rounded-lg bg-gray-600">
-                <div class="p-4">
+              <div key={card.id} className="mb-7 rounded-lg bg-gray-600">
+                <div className="p-4">
                   <div>
                     {isEditing[index] ? (
-                      <div class="flex flex-col">
+                      <div className="flex flex-col">
                         <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => onEditSubmit(data, index))(e)}}>
                           <ParagraphInput
                             register={register}
-                            name='frontText'
+                            name='editFrontText'
                             defaultValue={cards[index].frontText}
                             
                           />
                           <ParagraphInput
                             register={register} 
-                            name='backText'
+                            name='editBackText'
                             defaultValue={cards[index].backText}
                             
                           />
@@ -195,14 +195,14 @@ function App() {
                         
                       </div>
                     ) : (
-                      <div class="flex flex-col font-bold text-2xl ml-3">
-                        <div class="whitespace-pre-wrap mb-5 font-bold text-indigo-400">
+                      <div className="flex flex-col font-bold text-2xl ml-3">
+                        <div className="whitespace-pre-wrap mb-5 font-bold text-indigo-400">
                           {card.frontText}
                         </div>
-                        <div class="mb-3 whitespace-pre-wrap text-white">
+                        <div className="mb-3 whitespace-pre-wrap text-white">
                           {card.backText}
                         </div>
-                        <div class="flex justify-between">
+                        <div className="flex justify-between">
                           <Button
                             onClick={() => handleEdit(index, true)}
                             color="indigo"

@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth';
 import { issueCookie } from './cookies.js';
 import { decodeCookie } from './cookies.js';
-import { db, auth, app, useForm, toast, Input, ParagraphInput, PasswordInput, Button, useNavigate, ReactModal, LoadingOverlays } from '../../imports.js';
+import { db, auth, app, useForm, toast, Input, PasswordInput, Button, useNavigate, LoadingOverlays } from '../../imports.js';
 
 export default function App() {
   const navigate = useNavigate();
@@ -15,10 +15,11 @@ export default function App() {
  
   const checkboxRef = useRef(false);
   const isMounted = useRef(false);
-  const servKey = getServKey();
+
 
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -28,7 +29,7 @@ export default function App() {
 
       setLoading(true);
       const getCookieData = async () => {
-        const cookieData = await decodeCookie(servKey);
+        const cookieData = await decodeCookie(privKey);
         const [email, password] = cookieData.split(',');
         signIn(email, password);
       };
@@ -51,7 +52,7 @@ export default function App() {
     const password = parsedData.Password;
 
     if (checkboxRef.current.checked) {
-      issueCookie(parsedData, servKey);
+      issueCookie(parsedData, privKey);
     }
 
     signIn(email, password);
@@ -109,7 +110,10 @@ export default function App() {
                       Sign up
                     </a>
                   </div>
-                  <Button color='indigo' text='Sign in' isLong={true} />
+                  <Button color="indigo" text="Study" isLong={true} />
+             
+                  
+ 
                 </div>
                 <div className='pt-5 flex justify-center'>
                   <a

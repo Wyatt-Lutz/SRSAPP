@@ -44,7 +44,7 @@ export default function App() {
               </h1>
               <Input register={register} name='Email' placeholder="Email" />
 
-              {/*<Input register={register} name='Username' placeholder={} /> */}
+              
 
               
               <div>
