@@ -27,8 +27,16 @@ export default function App() {
         navigate('/decks');
       })
       .catch((error) => {
-        console.error(error.code + ' ' + error.message);
-        toast.error('Error creating account.')
+        console.error(error.code);
+        
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            toast.error("Email is already in use");
+            
+            break;
+        }
+        
+        
 
       });
   };
