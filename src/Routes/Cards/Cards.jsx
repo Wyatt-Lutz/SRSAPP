@@ -7,7 +7,9 @@ import {
 } from 'firebase/firestore';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-import { db, auth, app, useNavigate } from '../imports.js';
+import { db, auth, app, useNavigate } from '../../imports.js';
+
+import { fetchDueCards } from './cardsLogic.js';
 //xX8%*c8T!Kc$5C%
 
 function App() {
@@ -25,8 +27,11 @@ function App() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const deckId = urlParams.get('id');
-
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
+  const retained = docRef.data().retained;
+  const studied = docRef.data().studied;
+  const retainRate = (retained / studied) * 100;
+
 
   const buttonData = [
     { text: 'Again', value: 0 },
@@ -37,70 +42,20 @@ function App() {
 
   useEffect(() => {
     console.log('onMount useEffect run');
-
-    async function fetchDecks() {
-
-
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        console.error('Error getting doc');
-        return;
-      }
-
-      const cardsData = docSnap.data().cards;
-
-      const leechFilteredCardsData = cardsData.filter((card) => !card.isLeech);
-      setCards(leechFilteredCardsData);
-
-      const dueCards = leechFilteredCardsData.filter(
-        (card) => card.nextReview <= new Date().getTime(),
-      );
-      if (dueCards.length === 0) {
-        noDueCards();
-      } else {
-        setDueCards(dueCards);
-      }
-    }
-    fetchDecks();
+    const [dueCards, iModifier] = fetchDueCards(docRef, false, retainRate);
+    setDueCards(dueCards);
+    
+  
   }, []);
-
-  useEffect(() => {
-    const updateDB = async () => {
-      await updateDoc(docRef, {
-        cards: cards,
-      });
-    };
-
-    if (isMounted.current) {
-      updateDB();
-
-      if (
-        dueCards.length === 1 &&
-        ((dueCards[currentIndex].consecGood > 0 && rating === 2) ||
-          rating === 3)
-      ) {
-        setIsFinished(true);
-      }
-    } else {
-      isMounted.current = true;
-    }
-  }, [cards]);
-
-  function noDueCards() {
-    const newDueCards = cards.filter((card) => !card.isGraduated);
-    setDueCards(newDueCards);
-    setCurrentIndex(0);
-    handleFlipCard();
-  }
 
   function handleNextCard() {
     if (dueCards.length > currentIndex + 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
-      handleFlipCard();
     } else {
-      noDueCards();
+      setDueCards(fetchDueCards(docRef, true));
+      setCurrentIndex(0);   
     }
+    handleFlipCard();
   }
 
   const handleFlipCard = useCallback(() => {

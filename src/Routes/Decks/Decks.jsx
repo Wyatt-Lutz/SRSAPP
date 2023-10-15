@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchDecks, deleteDeck } from './getDecks.js';
+import { fetchDecks, deleteDeck } from './deckLogic.js';
 import { auth, app, Button, useNavigate } from '../../imports.js';
 
 function App() {

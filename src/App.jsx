@@ -4,7 +4,7 @@ import Layout from './Layout.jsx';
 
 const Signin = lazy(() => import('./Routes/Signin/Signin.jsx'));
 const Signup = lazy(() => import('./Routes/Signup.jsx'));
-const Cards = lazy(() => import('./Routes/Cards.jsx'));
+const Cards = lazy(() => import('./Routes//Cards/Cards.jsx'));
 const DeckCreation = lazy(() => import('./Routes/DeckCreation.jsx'));
 const Decks = lazy(() => import('./Routes/Decks/Decks.jsx'));
 const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));

@@ -28,7 +28,7 @@
           -Graduation: No changes.
 
         Easy - User knew the answer with zero hesitation.
-          -Learning: Card immediatly goes to the graduation stage starting at a 2 day interval.
+          -Learning: Card immediatly goes to the graduation stage starting at a 1 day interval.
           -Graduation: See Easy Bonus.
 
       The max interval is 1 year (MC).
@@ -38,7 +38,7 @@
       The default easy bonus is 1.3x
     
     4. Hard Penalty:
-      If a graduated card is given a rating of Hard, the new interval will be the old interval multiplied by 1.2x. (MC)
+      If a graduated card is given a rating of Hard, the new interval will be the old interval divided by 1.2x. (MC)
 
     4. Lapsed Cards
       A lapsed card is a graduated card that goes back into the Learning stage if the user rates the card with "Again".

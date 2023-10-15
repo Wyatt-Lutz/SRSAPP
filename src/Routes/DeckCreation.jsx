@@ -68,8 +68,8 @@ function App() {
       nextReview: Date.now(),
       lastInterval: 60000,
       lapses: 0,
+      IM: 1,
       isLeech: false,
-      consecGood: 0,
       cardIndex: currIndex,
       lapsedStartingInterval: 0,
     };
@@ -91,6 +91,9 @@ function App() {
     const deckName = parsedData.DeckName;
     await setDoc(docRef, {
       name: deckName,
+      retained: 0,
+      studied: 0,
+      start: new Date().getTime(),
     });
   };
 

@@ -32,6 +32,7 @@ function App() {
   
       const deckData = docSnap.data();
       const cardsData = deckData.cards.map((card) => ({ frontText: card.frontText, backText: card.backText }));
+
       setCards(cardsData);
   
     }
@@ -90,7 +91,6 @@ function App() {
       lastInterval: 60000,
       lapses: 0,
       isLeech: false,
-      consecGood: 0,
       cardIndex: deckData.cards.length,
       lapsedStartingInterval: 0,
     };
@@ -100,6 +100,7 @@ function App() {
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
+
   }
 
   function handleEdit(index, bool) {

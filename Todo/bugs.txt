@@ -35,7 +35,9 @@ Profile:
 
 App:
     - Fix user persistance 
-    - Add toasts when needed
+    - Add toast errors errwhere
+    - Figure out why components take so long to load on first load
+    - Non indigo colored buttons don't show color. Just remove button component and use regular button tag
 
 
 
