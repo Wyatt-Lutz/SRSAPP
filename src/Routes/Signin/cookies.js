@@ -1,6 +1,8 @@
 import CryptoAES from 'crypto-js/aes';
 import CryptoENC from 'crypto-js/enc-utf8';
-import servKey from '../../../servkey.js';
+//import servKey from '../../../servkey.js';
+
+const servKey = process.env.serv_key;
 
 export async function issueCookie(data) {
 
