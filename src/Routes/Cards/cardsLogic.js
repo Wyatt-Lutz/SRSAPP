@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { db, auth, app, useNavigate } from '../../imports.js';
 
 
-export async function fetchDueCards(docRef, noDue, retainRate) {
+export async function fetchDueCards(docRef) {
     const currTime = new Date().getTime();
     const docSnap = await getDoc(docRef);
 
@@ -12,26 +12,22 @@ export async function fetchDueCards(docRef, noDue, retainRate) {
         return;
     }
     const cardsData = docSnap.data().cards;
-    const timeSinceDeckStart = docSnap.data().start;
-    let iModifer = 0;
-    
-    if (currTime - timeSinceDeckStart === 907200000) { //10.5 days 
-        
-      iModifer = (Math.log(85) / Math.log(retainRate));
 
-
-    }
-    const realDueCards = cardsData.filter((card) => card.nextReview <= currTime());
-    console.log(realDueCards);
+    const realDueCards = cardsData.filter((card) => card.nextReview <= currTime);
     const dueCards = realDueCards.length != 0 ? realDueCards : cardsData.filter((card) => !card.isGraduated);
-    console.log(dueCards);
-    //Fix for noDue
+   
 
-    return [dueCards, iModifer];
+    return dueCards;
 }
 
 
-export async function handleReview(card, rating, iModifer) {
+export async function handleReview(docRef, card, rating, iModifer) {
+    console.log('handleReview ran');
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      console.log('doc doesnt exist');
+      return;
+    }
     const currTime = new Date().getTime();
     const retainedCard = Math.min(rating / 2, 1);
 
@@ -77,26 +73,26 @@ export async function handleReview(card, rating, iModifer) {
           isLeech = true;
           currLapses = 0;
         }
-
+    }
+    updatedCard.nextReview = (nextInterval + currTime);
+    updatedCard.lastInterval = (Math.min(nextInterval, 31556926000));
+    updatedCard.lapses = currLapses;
+    updatedCard.isLeech = isLeech;
+    updatedCard.isGraduated = graduatedBool;
     
 
-        updatedCard.nextReview = (nextInterval + currTime);
-        updatedCard.lastInterval = nextInterval;
-        updatedCard.lapses = currLapses;
-        updatedCard.isLeech = isLeech;
-        updatedCard.isGraduated = graduatedBool;
-      }
-
-
-
-      return [updatedCard, retainedCard];
 
       
-    
+      const { retained, studied, cards } = docSnap.data();
+      const updatedCards = [...cards];
+      updatedCards[updatedCard.cardIndex] = updatedCard;
 
 
-
-
+      await updateDoc(docRef, {
+        retained: retained + retainedCard,
+        studied: studied + 1,
+        cards: updatedCards,
+      });
 }
 
 

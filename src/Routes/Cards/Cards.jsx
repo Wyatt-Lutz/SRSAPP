@@ -19,12 +19,14 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [dueCards, setDueCards] = useState([]);
+  const hasMountedRef = useRef(false);
 
 
   const urlParams = new URLSearchParams(window.location.search);
   const deckId = urlParams.get('id');
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
   var intervalModifier;
+
   
 
 
@@ -36,32 +38,39 @@ function App() {
   ];
 
   useEffect(() => {
-    async function calcRetainRate() {
-      const docSnap = await getDoc(docRef);
-      const {retained, studied } = docSnap.data();
-      const retainRate = (retained / studied) * 100;
-      return retainRate;
-    }
 
-    console.log('onMount useEffect run');
     async function fetchData() {
-      const retainRate = await calcRetainRate();
-      const result = fetchDueCards(docRef, false, retainRate);
-      intervalModifier = result.iModifier;
-      setDueCards(result.dueCards);
+      const docSnap = await getDoc(docRef);
+      const { retained, studied, start } = docSnap.data();
+      const currTime = new Date().getTime();
+      const retainRate = (retained / studied) * 100;
+ 
+    
+      if (currTime - start === 907200000) { //10.5 days 
+        intervalModifier = (Math.log(85) / Math.log(retainRate));
+      }
+      const dueCards = await fetchDueCards(docRef);
+      setDueCards(dueCards);
 
     }
-    fetchData();
+    if (!hasMountedRef.current) {
+      fetchData();
+      hasMountedRef.current = true
+    }
+
+    
     
   
   }, []);
 
   function handleNextCard(rating) {
-    handleReview(dueCards[currentIndex], rating, intervalModifier);
+    console.log(dueCards);
+    handleReview(docRef, dueCards[currentIndex], rating, intervalModifier);
     if (dueCards.length > currentIndex + 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
     } else {
-      setDueCards(fetchDueCards(docRef, true));
+      console.log('fetchDue notDue cards ran');
+      setDueCards(fetchDueCards(docRef));
       setCurrentIndex(0);   
     }
     handleFlipCard();
@@ -80,7 +89,7 @@ function App() {
       <div class='flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0'>
         <div class=' w-full rounded-lg border border-gray-700 bg-gray-800 shadow-sm max-w-md md:mt-0 xl:p-0'>
           <div class='space-y-4 p-6 sm:p-8 md:space-y-6 flex flex-col'>
-            {dueCards.size > 0 ? (
+            {dueCards.length > 0 ? (
               <div class='flex justify-between text-gray-200'>
                 {!isFlipped ? (
                   <div>

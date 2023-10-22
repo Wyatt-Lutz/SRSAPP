@@ -92,7 +92,6 @@ function App() {
       lapses: 0,
       isLeech: false,
       cardIndex: deckData.cards.length,
-      lapsedStartingInterval: 0,
     };
     setCards((prevCards) => [...prevCards, newCard]);
     

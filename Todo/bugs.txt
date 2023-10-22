@@ -4,9 +4,11 @@ Signup:
 Signin:
     - Check if its possible to use console or something to get the serv key because I have it as allow read on rules
     - Add forgot password function
+    
 
 Drawer:
     - When you click decks or profile, it should auto close and not open unless button proximity again, this fix may require rewriting more stuff
+    - Signout kinda bugs sometimes, it will sign you back in
 
 
 Decks:
@@ -14,6 +16,7 @@ Decks:
     - Add individual deck settings (number of cards per day)
     - Pagination
     - Search function
+    - Delete Button doesnt work immedietly
 
 DeckEditation:
     - While editing a card, then press edit on another card, you can have both edits open at same time
@@ -45,6 +48,8 @@ App:
     - Non indigo colored buttons don't show color. Just remove button component and use regular button tag
 
 
+Production vs Development
+    - Signin cookies.js -> uncomment process.env and comment out import
 
 
 

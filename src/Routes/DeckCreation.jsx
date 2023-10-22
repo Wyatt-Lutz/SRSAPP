@@ -68,10 +68,8 @@ function App() {
       nextReview: Date.now(),
       lastInterval: 60000,
       lapses: 0,
-      IM: 1,
       isLeech: false,
       cardIndex: currIndex,
-      lapsedStartingInterval: 0,
     };
     
 
