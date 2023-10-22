@@ -21,6 +21,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
 
 
+
   useEffect(() => {
     if (!isMounted.current) {
       if (document.cookie === '') {
@@ -29,7 +30,7 @@ export default function App() {
 
       setLoading(true);
       const getCookieData = async () => {
-        const cookieData = await decodeCookie(privKey);
+        const cookieData = await decodeCookie();
         const [email, password] = cookieData.split(',');
         signIn(email, password);
       };
@@ -39,12 +40,7 @@ export default function App() {
     }
   }, []);
 
-  async function getServKey() {
-    const keyDocRef = doc(collection(db, 'serv_key'), 'serv_key');
-    const docSnap = await getDoc(keyDocRef);
-    const servKey = docSnap.data().serv_key;
-    return servKey;
-  }
+
 
   const onSubmit = (data) => {
     const parsedData = JSON.parse(JSON.stringify(data));
@@ -52,7 +48,7 @@ export default function App() {
     const password = parsedData.Password;
 
     if (checkboxRef.current.checked) {
-      issueCookie(parsedData, privKey);
+      issueCookie(parsedData);
     }
 
     signIn(email, password);
@@ -111,7 +107,7 @@ export default function App() {
                     </a>
                   </div>
 
-                  <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white w-full hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => setIsOpen(true)}>Study</button>
+                  <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white w-full hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Signin</button>
              
                   
  

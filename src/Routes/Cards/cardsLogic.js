@@ -22,6 +22,7 @@ export async function fetchDueCards(docRef, noDue, retainRate) {
 
     }
     const realDueCards = cardsData.filter((card) => card.nextReview <= currTime());
+    console.log(realDueCards);
     const dueCards = realDueCards.length != 0 ? realDueCards : cardsData.filter((card) => !card.isGraduated);
     console.log(dueCards);
     //Fix for noDue

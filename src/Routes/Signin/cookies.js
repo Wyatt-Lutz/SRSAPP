@@ -1,8 +1,8 @@
 import CryptoAES from 'crypto-js/aes';
 import CryptoENC from 'crypto-js/enc-utf8';
+import servKey from '../../../servkey.js';
 
-export async function issueCookie(data, servKeyPromise) {
-  const servKey = await servKeyPromise;
+export async function issueCookie(data) {
 
   const now = new Date();
   const expireTime = new Date(now.getTime() + 604800000);
@@ -23,8 +23,7 @@ export async function issueCookie(data, servKeyPromise) {
   document.cookie = `rememberMeToken=${encodedData};expires=${expires};path=${path};secure=${secure};sameSite=${sameSite};`;
 }
 
-export async function decodeCookie(servKeyPromise) {
-  const servKey = await servKeyPromise;
+export async function decodeCookie() {
 
   const cookies = document.cookie;
   const [_, cookieDatas] = cookies.split('=');

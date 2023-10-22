@@ -2,7 +2,8 @@ Signup:
     - Add email verification (maybe)
 
 Signin:
-     - Check if its possible to use console or something to get the serv key because I have it as allow read on rules
+    - Check if its possible to use console or something to get the serv key because I have it as allow read on rules
+    - Add forgot password function
 
 Drawer:
     - When you click decks or profile, it should auto close and not open unless button proximity again, this fix may require rewriting more stuff
@@ -10,6 +11,9 @@ Drawer:
 
 Decks:
     - Show how many cards are due for each deck 
+    - Add individual deck settings (number of cards per day)
+    - Pagination
+    - Search function
 
 DeckEditation:
     - While editing a card, then press edit on another card, you can have both edits open at same time
@@ -20,9 +24,10 @@ DeckCreation:
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
 
 Cards:
+    - Pageination
+    - Search function
 
-ButtonComp:
-    
+ButtonComp:  
 
 react-hook-form:
     data.email
