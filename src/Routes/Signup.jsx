@@ -68,8 +68,8 @@ export default function App() {
                   Signin
                 </a>
               </div>
-
-              <Button color='indigo' text='Signup' isLong={true} />
+              
+              <button className='shadow-indigo-500/50 shadow-2xl w-full rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Signup</button>
             </div>
           </div>
         </div>

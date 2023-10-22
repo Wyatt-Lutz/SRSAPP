@@ -110,7 +110,8 @@ export default function App() {
                       Sign up
                     </a>
                   </div>
-                  <Button color="indigo" text="Study" isLong={true} />
+
+                  <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white w-full hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => setIsOpen(true)}>Study</button>
              
                   
  

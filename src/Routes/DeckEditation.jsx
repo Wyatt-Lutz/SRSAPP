@@ -148,7 +148,8 @@ function App() {
                         <ParagraphInput register={register} defaultValue="" name="createBackText" placeholder="Back Text" />
       
                       </div>
-                      <Button color='indigo' text='Add Card'/>
+          
+                      <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Add Card</button>
                     </form>
       
              
@@ -188,10 +189,8 @@ function App() {
                             defaultValue={cards[index].backText}
                             
                           />
-                          <Button
-                            color="indigo"
-                            text="Save"
-                          />
+        
+                          <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Save</button>
                         </form>
                         
                       </div>
@@ -204,17 +203,11 @@ function App() {
                           {card.backText}
                         </div>
                         <div className="flex justify-between">
-                          <Button
-                            onClick={() => handleEdit(index, true)}
-                            color="indigo"
-                            text="Edit"
-                          />
 
-                          <Button
-                            onClick={() => handleDelete(index)}
-                            color="red"
-                            text="Delete"
-                          />
+                          <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleEdit(index, true)}>Edit</button>
+                          <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => handleDelete(index)}>Delete</button>
+
+
                         </div>
                       </div>
                     )}
@@ -223,16 +216,12 @@ function App() {
               </div>
             ))}
 
-            <Button
-              color="indigo"
-              text="Finish"
-              onClick={() => navigate('/decks')}
-            />
-            <Button
-              onClick={() => setIsOpen(true)}
-              text="Create New Card"
-              color="indigo"
-            />
+
+            <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => navigate('/decks')}>Finish</button>
+            <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => setIsOpen(true)}>Create New Card</button>
+
+            
+            
           </div>
         </div>
       </div>

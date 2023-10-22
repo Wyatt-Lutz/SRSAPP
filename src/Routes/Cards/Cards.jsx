@@ -9,7 +9,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 import { db, auth, app, useNavigate } from '../../imports.js';
 
-import { fetchDueCards } from './cardsLogic.js';
+import { fetchDueCards, handleReview } from './cardsLogic.js';
 //xX8%*c8T!Kc$5C%
 
 function App() {
@@ -18,19 +18,14 @@ function App() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [cards, setCards] = useState([]);
   const [dueCards, setDueCards] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
-  const [rating, setRating] = useState(null);
 
-  const isMounted = useRef(false);
 
   const urlParams = new URLSearchParams(window.location.search);
   const deckId = urlParams.get('id');
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
-  const retained = docRef.data().retained;
-  const studied = docRef.data().studied;
-  const retainRate = (retained / studied) * 100;
+  var intervalModifier;
+  
 
 
   const buttonData = [
@@ -41,14 +36,28 @@ function App() {
   ];
 
   useEffect(() => {
+    async function calcRetainRate() {
+      const docSnap = await getDoc(docRef);
+      const {retained, studied } = docSnap.data();
+      const retainRate = (retained / studied) * 100;
+      return retainRate;
+    }
+
     console.log('onMount useEffect run');
-    const [dueCards, iModifier] = fetchDueCards(docRef, false, retainRate);
-    setDueCards(dueCards);
+    async function fetchData() {
+      const retainRate = await calcRetainRate();
+      const result = fetchDueCards(docRef, false, retainRate);
+      intervalModifier = result.iModifier;
+      setDueCards(result.dueCards);
+
+    }
+    fetchData();
     
   
   }, []);
 
-  function handleNextCard() {
+  function handleNextCard(rating) {
+    handleReview(dueCards[currentIndex], rating, intervalModifier);
     if (dueCards.length > currentIndex + 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
     } else {
@@ -62,107 +71,24 @@ function App() {
     setIsFlipped((prev) => !prev);
   });
 
-  function handleReview(n) {
-    setRating(n);
-    const currTime = new Date().getTime();
-    const currentCard = dueCards[currentIndex];
-    const lastInterval = currentCard.lastInterval;
-    const currLapses = currentCard.lapses;
-    const currConsecGood = currentCard.consecGood;
 
-    const intervals = [
-      //in milliseconds
-      60000, // 1 minute
-      330000, // 5.5 minutes
-      600000, // 10 minutes
-      172800000, // 2 days
-      86400000, // 1 days
-    ];
 
-    if (!currentCard.isGraduated) {
-      const graduatedBool = (currConsecGood > 0 && n === 2) || n === 3;
-      const consecGood = n === 2 && !graduatedBool ? currConsecGood + 1 : 0;
 
-      const newInterval =
-        n === 0 || n === 1
-          ? intervals[n]
-          : graduatedBool
-          ? intervals[4]
-          : !graduatedBool
-          ? intervals[2]
-          : n === 3
-          ? intervals[3]
-          : null;
-
-      const nextReview = currTime + newInterval;
-
-      const updatedReviewCard = {
-        ...currentCard,
-        isGraduated: graduatedBool,
-        consecGood: consecGood,
-        lastInterval: newInterval,
-        nextReview: nextReview,
-      };
-
-      setCards((prev) => {
-        const updatedCards = [...prev];
-        updatedCards[currentCard.cardIndex] = updatedReviewCard;
-        return updatedCards;
-      });
-      console.log(cards);
-    } else {
-      var lapses = n === 0 ? lapses++ : lapses;
-
-      const nextInterval =
-        n === 0 && currLapses < lapses
-          ? intervals[2]
-          : n === 1
-          ? lastInterval * 1.3
-          : n === 2
-          ? lastInterval * 2.5
-          : lastInterval * 1.3 * 2.5;
-
-      const lapsedStartingInterval =
-        currLapses < lapses ? lastInterval * 0.4 : 0;
-      const nextReview = nextInterval + currTime;
-      const isLeech = lapses > 5;
-
-      const updatedGradCard = {
-        ...currentCard,
-        nextReview: nextReview,
-        lastInterval: nextInterval,
-        lapses: lapses,
-        isLeech: isLeech,
-        lapsedStartingInterval: lapsedStartingInterval,
-      };
-
-      setCards((prev) => {
-        const updatedCards = [...prev];
-        updatedCards[currentCard.cardIndex] = updatedGradCard;
-        return updatedCards;
-      });
-    }
-    handleNextCard();
-  }
 
   return (
     <section class='bg-gray-900'>
       <div class='flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0'>
         <div class=' w-full rounded-lg border border-gray-700 bg-gray-800 shadow-sm max-w-md md:mt-0 xl:p-0'>
           <div class='space-y-4 p-6 sm:p-8 md:space-y-6 flex flex-col'>
-            {dueCards.length > 0 && !isFinished ? (
+            {dueCards.size > 0 ? (
               <div class='flex justify-between text-gray-200'>
                 {!isFlipped ? (
                   <div>
                     <div class='w-1/2 text-lg'>
                       {dueCards[currentIndex].frontText}
                     </div>
-                    <button
-                      class='focus:outline-none focus:shadow-outline-indigo rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 active:bg-indigo-800'
-                      onClick={handleFlipCard}
-                    >
-                      Flip Card
-                    </button>
+                    <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={handleFlipCard}>Flip Card</button>
+
                   </div>
                 ) : (
                   <div>
@@ -174,13 +100,8 @@ function App() {
                     </div>
                     <div class='flex justify-between'>
                       {buttonData.map((button) => (
-                        <button
-                          key={button.value}
-                          class='m-2 focus:outline-none focus:shadow-outline-indigo rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 active:bg-indigo-800'
-                          onClick={() => handleReview(button.value)}
-                        >
-                          {button.text}
-                        </button>
+                        <button key={button.value} className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleNextCard(button.value)}>{button.text}</button>
+
                       ))}
                     </div>
                   </div>
@@ -191,12 +112,7 @@ function App() {
             )}
           </div>
         </div>
-        <button
-          class='focus:outline-none focus:shadow-outline-indigo rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 active:bg-indigo-800'
-          onClick={() => navigate('/decks')}
-        >
-          Exit{' '}
-        </button>
+        <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => navigate('/decks')}>Exit</button>
       </div>
     </section>
   );

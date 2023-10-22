@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { auth, useNavigate, db } from '../imports.js';
 import { signOut } from "firebase/auth";
-import { collection, query, onSnapshot, where } from 'firebase/firestore';
 
 
 export default function Drawer() {

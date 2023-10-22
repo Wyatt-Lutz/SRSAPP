@@ -119,7 +119,9 @@ function App() {
               <h1 className='font-bold text-3xl text-indigo-400'>Enter Deck Name</h1>
               <form className="space-y-4 px-6" onSubmit={handleSubmit(onNameSubmit)}>
                 <Input register={register} name='DeckName' placeholder="Deck Name"/>
-                <Button color="indigo" text="Continue" isLong={true} />
+ 
+                <button className='shadow-indigo-500/50 shadow-2xl w-full rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => setIsOpen(true)}>Continue</button>
+                
                 
        
               </form>
@@ -140,7 +142,8 @@ function App() {
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
           
                   
-                  <Button color='indigo' text='Finish Deck' onClick={onFinish} />
+      
+                  <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={onFinish}>Finish Deck</button>
 
               </div>
               <form onSubmit={handleSubmit(onCardSubmit)} className='space-y-4 flex flex-col' >
@@ -150,7 +153,8 @@ function App() {
                   <ParagraphInput register={register} name="BackText" placeholder="Back Text" />
 
                 </div>
-                <Button color='indigo' text='Add Card'/>
+
+                <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Add Card</button>
               </form>
 
        

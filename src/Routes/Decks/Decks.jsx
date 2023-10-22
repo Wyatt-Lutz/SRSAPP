@@ -42,7 +42,9 @@ function App() {
         <h1 className="mb-2 mt-2 text-center text-4xl font-bold text-indigo-400">
           Your Decks
         </h1>
-        <Button text="Create Deck" color="indigo" onClick={() => handleButtonClick('create')} />
+        
+        <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleButtonClick('create')}>Create Deck</button>
+
 
 
 
@@ -59,9 +61,9 @@ function App() {
             </h2>
             <div className="mb-2 flex items-center justify-around">
 
-            <Button color="indigo" text="Study" onClick={() => handleButtonClick('study', deck.id)} />
-            <Button color="gray" text="Edit" onClick={() => handleButtonClick('edit', deck.id)} />
-            <Button color="red" text="Delete" onClick={() => handleButtonClick('delete', deck.id)} />
+            <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleButtonClick('study', deck.id)}>Study</button>
+            <button className='shadow-gray-500/50 shadow-2xl rounded-lg bg-gray-500 px-5 py-2 text-xl font-bold text-white hover:bg-gray-600 focus:outline-none active:bg-gray-800' onClick={() => handleButtonClick('edit', deck.id)}>Edit</button>
+            <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => handleButtonClick('delete', deck.id)}>Delete</button>
           
 
             
