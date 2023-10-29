@@ -36,7 +36,7 @@ function App() {
 
   return (
 <div className="flex flex-col items-center justify-center px-6 py-8 h-screen">
-  <div className="w-full max-w-xl overflow-hidden rounded-lg bg-gray-700 shadow-2xl">
+  <div className="w-full max-w-xl rounded-lg bg-gray-700 shadow-2xl">
     <div className="p-6">
       <div className="flex justify-between">
         <h1 className="mb-2 mt-2 text-center text-4xl font-bold text-indigo-400">

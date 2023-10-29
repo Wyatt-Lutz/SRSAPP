@@ -19,7 +19,9 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [dueCards, setDueCards] = useState([]);
+  const [deckName, setDeckName] = useState("");
   const hasMountedRef = useRef(false);
+ 
 
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -41,7 +43,7 @@ function App() {
 
     async function fetchData() {
       const docSnap = await getDoc(docRef);
-      const { retained, studied, start } = docSnap.data();
+      const { retained, studied, start, name } = docSnap.data();
       const currTime = new Date().getTime();
       const retainRate = (retained / studied) * 100;
  
@@ -51,6 +53,7 @@ function App() {
       }
       const dueCards = await fetchDueCards(docRef);
       setDueCards(dueCards);
+      setDeckName(name);
 
     }
     if (!hasMountedRef.current) {
@@ -85,45 +88,65 @@ function App() {
 
 
   return (
-    <section class='bg-gray-900'>
-      <div class='flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0'>
-        <div class=' w-full rounded-lg border border-gray-700 bg-gray-800 shadow-sm max-w-md md:mt-0 xl:p-0'>
-          <div class='space-y-4 p-6 sm:p-8 md:space-y-6 flex flex-col'>
-            {dueCards.length > 0 ? (
-              <div class='flex justify-between text-gray-200'>
-                {!isFlipped ? (
-                  <div>
-                    <div class='w-1/2 text-lg'>
-                      {dueCards[currentIndex].frontText}
-                    </div>
-                    <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={handleFlipCard}>Flip Card</button>
+      <div class='flex items-center justify-center px-6 py-8 h-screen text-gray-200'>
+        <div class='w-full rounded-lg flex flex-col shadow-2xl bg-gray-700 min-h-[400px] max-w-xl'>
+     
+          <div className='border-b border-indigo-400 appearance-none font-bold text-3xl text-center p-3'>
+            {deckName}
+          </div>
 
+
+
+          <div class='space-y-6 mt-auto'>
+            {dueCards.length > 0 ? (
+
+              <div class='text-center'>
+                {!isFlipped ? (
+                  <div class='text-3xl inset-x-0 top-0'>
+                    {dueCards[currentIndex].frontText}
                   </div>
                 ) : (
-                  <div>
-                    <div class='w-1/2 text-lg'>
+                  <div className='flex flex-col'>
+                    <div className='text-3xl'>
                       {dueCards[currentIndex].frontText}
                     </div>
-                    <div class='w-1/2 text-lg'>
+                    <div className='text-xl'>
                       {dueCards[currentIndex].backText}
                     </div>
-                    <div class='flex justify-between'>
-                      {buttonData.map((button) => (
-                        <button key={button.value} className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleNextCard(button.value)}>{button.text}</button>
-
-                      ))}
-                    </div>
+                    
+                    
                   </div>
                 )}
               </div>
             ) : (
-              <div class='text-gray-200'>No Cards Due</div>
+              <div>
+                <div class='text-gray-200'>No Cards Due</div>
+                <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => navigate('/decks')}>Exit</button>
+              </div>
+
             )}
           </div>
+
+
+          <div className='border-t border-indigo-400 pb-4 pt-3 mt-auto'>
+            {!isFlipped ? (
+              <div className='flex justify-center'> 
+                <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={handleFlipCard}>Flip Card</button>
+              </div>
+            ) : (
+              <div class='flex m-2 justify-between'>
+                {buttonData.map((button) => (
+                  <button key={button.value} className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleNextCard(button.value)}>{button.text}</button>
+                ))}
+            </div>
+            )}
+
+
+        
+          </div>
         </div>
-        <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => navigate('/decks')}>Exit</button>
+        
       </div>
-    </section>
   );
 }
 export default App;
