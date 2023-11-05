@@ -8,26 +8,30 @@ const Cards = lazy(() => import('./Routes//Cards/Cards.jsx'));
 const DeckCreation = lazy(() => import('./Routes/DeckCreation.jsx'));
 const Decks = lazy(() => import('./Routes/Decks/Decks.jsx'));
 const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));
+import { QueryClient, QueryClientProvider } from 'react-query';
+const queryClient = new QueryClient();
 
 
 const App = () => {
   return (
-    <Profiler id="App">
-        <Layout />
-          <Suspense>
-            <Routes>
-              <Route path="/" element={<Signin />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/cards" element={<Cards />} />
-              <Route path="decks">
-                <Route index element={<Decks />} />
-                <Route path="create" element={<DeckCreation />} />
-                <Route path="study" element={<Cards />} />
-                <Route path="edit" element={<DeckEditation />} />
-              </Route>
-            </Routes>
-          </Suspense>
-    </Profiler>
+    <QueryClientProvider client={queryClient}>
+      <Profiler id="App">
+          <Layout />
+            <Suspense>
+              <Routes>
+                <Route path="/" element={<Signin />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/cards" element={<Cards />} />
+                <Route path="decks">
+                  <Route index element={<Decks />} />
+                  <Route path="create" element={<DeckCreation />} />
+                  <Route path="study" element={<Cards />} />
+                  <Route path="edit" element={<DeckEditation />} />
+                </Route>
+              </Routes>
+            </Suspense>
+      </Profiler>
+    </QueryClientProvider>
   );
 };
 

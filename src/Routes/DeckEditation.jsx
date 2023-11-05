@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { doc, collection, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-
+import { useQuery } from 'react-query';
 
 import { db, auth, app, useForm, toast, ParagraphInput, Button, useNavigate, ReactModal } from '../imports.js';
 
@@ -10,7 +10,6 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isEditing, setIsEdit] = useState(Array(cards.length).fill(false));
   const [isOpen, setIsOpen] = useState(false);
-
   const navigate = useNavigate();
   const user = auth.currentUser;
   const queryString = window.location.search;
@@ -22,7 +21,6 @@ function App() {
 
 
   useEffect(() => {
-
     async function fetchData() {
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
@@ -32,16 +30,24 @@ function App() {
   
       const deckData = docSnap.data();
       const cardsData = deckData.cards.map((card) => ({ frontText: card.frontText, backText: card.backText }));
-
-      setCards(cardsData);
+  
+      return cardsData;
   
     }
+    const { data, isLoading, isError } = useQuery('cardsKey', fetchData);
+    if (isLoading) {
+      return <p>Loading...</p>
+    }
+    if (isError) {
+      return <p>Error</p>
+    }
+    if (data) {
+      setCards(data);
+    }
+  },[]);
 
+ 
 
-
-    
-    fetchData();
-  }, []);
 
 
 

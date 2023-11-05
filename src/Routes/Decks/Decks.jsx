@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { fetchDecks, deleteDeck } from './deckLogic.js';
-import { auth, app, Button, useNavigate } from '../../imports.js';
+import { auth, app, useNavigate } from '../../imports.js';
+import { useQuery } from 'react-query';
 
 function App() {
   const navigate = useNavigate();
   const user = auth.currentUser;
-  const [decks, setDecks] = useState([]);
 
-  useEffect(() => {
-    fetchDecks(user.uid).then((fetchedDecks) => {
-      setDecks(fetchedDecks);
-    });
-  }, []);
+
+  const { data: decks, isLoading, isError } = useQuery('decksKey', () => fetchDecks(user.uid));
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+  if (isError) {
+    return <p>Error</p>
+  }
+
 
   
   function handleButtonClick(action, deckId) {

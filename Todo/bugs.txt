@@ -46,6 +46,9 @@ App:
     - Add toast errors errwhere
     - Figure out why components take so long to load on first load
     - Non indigo colored buttons don't show color. Just remove button component and use regular button tag
+    - WHen deleting something for user, just remove it from dom immeditatly
+    - Chaching data - REACT QUERY!!
+
 
 
 Production vs Development
