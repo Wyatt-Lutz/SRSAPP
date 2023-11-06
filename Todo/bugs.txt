@@ -20,6 +20,8 @@ Decks:
 
 DeckEditation:
     - While editing a card, then press edit on another card, you can have both edits open at same time
+    - buggy react query -> rethink things with state and react query -> useReducer as a possibility
+    - Unable to delete card if is only card left, or maybe if its index of 0, unsure
 
 DeckCreation:
     - Make sure user cant put in 3 trillion cards or whatever

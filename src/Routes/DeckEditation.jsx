@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import { doc, collection, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient} from 'react-query';
 
-import { db, auth, app, useForm, toast, ParagraphInput, Button, useNavigate, ReactModal } from '../imports.js';
+import { db, auth, useForm, toast, ParagraphInput, LoadingOverlays, useNavigate, ReactModal } from '../imports.js';
 
 ReactModal.setAppElement('#root');
 
 function App() {
-  const [cards, setCards] = useState([]);
-  const [isEditing, setIsEdit] = useState(Array(cards.length).fill(false));
+  const [isEditing, setIsEdit] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const user = auth.currentUser;
@@ -17,51 +16,47 @@ function App() {
   const deckId = urlParams.get('id');
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
   const { register, handleSubmit, reset } = useForm();
+  const queryClient = useQueryClient();
+  const hasMountedRef = useRef(false);
+  
+
+  const fetchData = async () => {
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      console.error('deck not found');
+      return [];
+    }
+    const deckData = docSnap.data();
+    return deckData.cards.map((card) => ({ 
+      frontText: card.frontText, 
+      backText: card.backText 
+    }));
+  };
+
+  const { data: cards, isLoading, isError, error } = useQuery('cardsKey', fetchData);
 
 
+  if (isLoading) {
+    return <LoadingOverlays isLoading={true} />
+  }
+  if (isError) {
+    return <p>Error: {error.message}</p>
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists()) {
-        console.error('deck not found');
-        return;
-      }
-  
-      const deckData = docSnap.data();
-      const cardsData = deckData.cards.map((card) => ({ frontText: card.frontText, backText: card.backText }));
-  
-      return cardsData;
-  
+    if (hasMountedRef.current) {
+      setIsEdit(Array(cards.length).fill(false));
     }
-    const { data, isLoading, isError } = useQuery('cardsKey', fetchData);
-    if (isLoading) {
-      return <p>Loading...</p>
-    }
-    if (isError) {
-      return <p>Error</p>
-    }
-    if (data) {
-      setCards(data);
-    }
-  },[]);
+    hasMountedRef.current = true;
+  },[cards]);
 
  
-
-
-
-
-
-  async function onEditSubmit (data, index) {
+  const onEditSubmit = async (data, index) => {
     const front = data.editFrontText;
     const back = data.editBackText;
+    const newCards = [...cards];
+    newCards[index] = { frontText: front, backText: back };
 
-    
-    setCards((prev) => {
-      prev[index].frontText = front;
-      prev[index].backText = back;
-      return [...prev];
-    });
     handleEdit(index, false);
 
     const docSnap = await getDoc(docRef);
@@ -70,13 +65,12 @@ function App() {
       return;
     }
     const deckData = docSnap.data();
-    deckData.cards[index].frontText = front;
-    deckData.cards[index].backText = back;
+    deckData.cards[index] = { frontText: front, backText: back };
     await setDoc(docRef, deckData, { merge: true });
 
   }
 
-  async function onNewCardSubmit (data) {
+  const onNewCardSubmit = async (data) => {
     console.log('new card func ran');
     setIsOpen(false);
     reset({ frontText: '', backText: '' });
@@ -99,12 +93,13 @@ function App() {
       isLeech: false,
       cardIndex: deckData.cards.length,
     };
-    setCards((prevCards) => [...prevCards, newCard]);
     
     
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
+
+   
 
   }
 
@@ -131,12 +126,14 @@ function App() {
     await setDoc(docRef, { cards: cardsData }, { merge: true });
 
 
-    setCards(cardsData);
+
+
+  
 
 
   }
 
-
+  queryClient.invalidateQueries({ queryKey: ['cardQueryKey']});
   return (
     <section>
       {isOpen ? (

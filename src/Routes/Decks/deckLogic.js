@@ -1,8 +1,8 @@
 
 import { collection, query, doc, deleteDoc, getDocs } from 'firebase/firestore';
-import { useQuery } from 'react-query';
 
 import { db } from '../../imports.js';
+
 export async function fetchDecks(userId) {
   const decksRef = collection(db, 'users', userId, 'decks');
   const decksQuery = query(decksRef);

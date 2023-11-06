@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { collection, getDoc, doc } from 'firebase/firestore';
 import {
   signInWithEmailAndPassword,
   setPersistence,
@@ -7,68 +6,47 @@ import {
 } from 'firebase/auth';
 import { issueCookie } from './cookies.js';
 import { decodeCookie } from './cookies.js';
-import { db, auth, app, useForm, toast, Input, PasswordInput, Button, useNavigate, LoadingOverlays } from '../../imports.js';
+import { auth, useForm, toast, Input, PasswordInput, useNavigate, LoadingOverlays } from '../../imports.js';
 
 export default function App() {
   const navigate = useNavigate();
-
- 
   const checkboxRef = useRef(false);
-  const isMounted = useRef(false);
-
-
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
 
 
 
   useEffect(() => {
-    if (!isMounted.current) {
-      if (document.cookie === '') {
-        return;
-      }
-
+    if (document.cookie !== '') {
       setLoading(true);
-      const getCookieData = async () => {
+      (async () => {
         const cookieData = await decodeCookie();
         const [email, password] = cookieData.split(',');
         signIn(email, password);
-      };
-      getCookieData();
-    } else {
-      isMounted.current = false;
+      })();
     }
   }, []);
 
 
-
   const onSubmit = (data) => {
-    const parsedData = JSON.parse(JSON.stringify(data));
-    const email = parsedData.Email;
-    const password = parsedData.Password;
-
+    const { Email, Password } = data;
     if (checkboxRef.current.checked) {
       issueCookie(parsedData);
     }
-
-    signIn(email, password);
+    signIn(Email, Password);
   };
 
-  function signIn(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        setLoading(true);
-        (async () => {
-          await setPersistence(auth, browserLocalPersistence);
-        })();
-        setTimeout(() => {
-          setLoading(false);
-          navigate('/decks');
-        }, 300);
-      })
-      .catch((error) => {
-        console.log(error.code + ' ' + error.message);
-      });
+  const signIn = async (email, password) => {
+    try {
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      await setPersistence(auth, browserLocalPersistence);
+      setLoading(false);
+      navigate('/decks');
+
+    } catch (error) {
+      console.error(error.code);
+    }
   }
 
   return (
@@ -78,8 +56,8 @@ export default function App() {
       {!loading && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mx-auto flex flex-col items-center justify-center h-screen'>
-            <div className='bg-gray-700 rounded-lg w-[27rem] shadow-2xl'>
-              <div className='p-8'>
+            <div className='bg-gray-700 p-8 rounded-lg w-[27rem] shadow-2xl'>
+          
 
                 <div className='space-y-6'>
                   <div className='text-3xl font-bold pb-4 text-indigo-400'>
@@ -120,7 +98,7 @@ export default function App() {
                     Forgot password?
                   </a>
                 </div>
-              </div>
+              
             </div>
           </div>
         </form>

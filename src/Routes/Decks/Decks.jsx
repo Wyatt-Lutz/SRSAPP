@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchDecks, deleteDeck } from './deckLogic.js';
-import { auth, app, useNavigate } from '../../imports.js';
+import { auth, useNavigate, LoadingOverlays } from '../../imports.js';
 import { useQuery } from 'react-query';
 
 function App() {
@@ -8,13 +8,17 @@ function App() {
   const user = auth.currentUser;
 
 
-  const { data: decks, isLoading, isError } = useQuery('decksKey', () => fetchDecks(user.uid));
+  //const { data: decks, isLoading, isError } = useQuery('decksKey', () => fetchDecks(user.uid));
+  const { data: decks, isLoading, isError, error } = useQuery({
+    queryKey: ['deckQueryKey'],
+    queryFn: () => fetchDecks(user.uid),
+  })
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <LoadingOverlays isLoading={true} />
   }
   if (isError) {
-    return <p>Error</p>
+    return <p>Error: {error.message}</p>
   }
 
 
