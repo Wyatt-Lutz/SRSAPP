@@ -40,7 +40,7 @@ function App() {
 
   async function createCard(front, back) {
 
-    const snap = await getDoc(docRef);
+    const snap = await get(docRef);
 
     if(!snap.exists() ) {
       toast.error('The deck doesn\'t exist.');

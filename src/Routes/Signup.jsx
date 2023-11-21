@@ -7,9 +7,8 @@ export default function App() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async ({ Email, Password }) => {
     try {
-      const { Email, Password } = data;
       const userCredential = await createUserWithEmailAndPassword(auth, Email, Password);
       const { user } = userCredential;
       await setDoc(doc(db, "users", user.uid), {
