@@ -15,8 +15,6 @@ export async function fetchDueCards(docRef) {
 
     const realDueCards = cardsData.filter((card) => card.nextReview <= currTime);
     const dueCards = realDueCards.length != 0 ? realDueCards : cardsData.filter((card) => !card.isGraduated);
-   
-
     return dueCards;
 }
 

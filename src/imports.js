@@ -10,6 +10,7 @@ import Button from './components/Button.jsx';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
 import LoadingOverlays from './components/LoadingOverlays.jsx';
+import Block from './components/Block.jsx'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBu1ALA2a6W2CF_3GXhFCwL_yUSFare5qg',
@@ -27,5 +28,5 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 
-export { db, auth, app, useForm, toast, Input, ParagraphInput, PasswordInput, Button, useNavigate, ReactModal, LoadingOverlays };
+export { db, auth, app, Block, useForm, toast, Input, ParagraphInput, PasswordInput, Button, useNavigate, ReactModal, LoadingOverlays };
 

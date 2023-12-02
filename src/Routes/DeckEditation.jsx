@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef} from 'react';
 import { doc, collection, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { useQuery, useQueryClient} from 'react-query';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
 
 import { db, auth, useForm, toast, ParagraphInput, LoadingOverlays, useNavigate, ReactModal } from '../imports.js';
 
@@ -18,8 +18,6 @@ function App() {
   const { register, handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
   const hasMountedRef = useRef(false);
-  
-
   const fetchData = async () => {
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -33,7 +31,34 @@ function App() {
     }));
   };
 
-  const { data: cards, isLoading, isError, error } = useQuery('cardsKey', fetchData);
+  const { data: cards, isLoading, isError, error } = useQuery({
+    queryKey: ['cardsKey'],
+    queryFn: () => fetchData(),
+  });
+  
+
+  const editCardMutation = useMutation((data, index) => onEditSubmit(data, index), {
+    onSuccess:() => {
+      queryClient.invalidateQueries({queryKey: ['cardsKey']});
+    }
+  });
+
+  const deleteCardMutation = useMutation((index) => handleDelete(index), {
+    onSuccess:() => {
+      queryClient.invalidateQueries({queryKey: ['cardsKey']});
+    }
+  });
+
+  const addCardMutation = useMutation((data) => onNewCardSubmit(data), {
+    onSuccess:() => {
+      queryClient.invalidateQueries({queryKey: ['cardsKey']});
+    }
+  });
+  
+//-143 -21
+
+
+
 
 
   if (isLoading) {
@@ -52,6 +77,8 @@ function App() {
 
  
   const onEditSubmit = async (data, index) => {
+    try {
+    //const { editFrontText, editBackText } = data;
     const front = data.editFrontText;
     const back = data.editBackText;
     const newCards = [...cards];
@@ -67,7 +94,9 @@ function App() {
     const deckData = docSnap.data();
     deckData.cards[index] = { frontText: front, backText: back };
     await setDoc(docRef, deckData, { merge: true });
-
+    } catch (error) {
+      console.error("onEditSubmit:" + error.message);
+    }
   }
 
   const onNewCardSubmit = async (data) => {
@@ -133,7 +162,7 @@ function App() {
 
   }
 
-  queryClient.invalidateQueries({ queryKey: ['cardQueryKey']});
+  
   return (
     <section>
       {isOpen ? (
@@ -143,7 +172,7 @@ function App() {
                   <div className="rounded-lg bg-gray-700 p-6 shadow-2xl">
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
 
-                    <form onSubmit={handleSubmit(onNewCardSubmit)} className='space-y-4 flex flex-col' >
+                    <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => addCardMutation.mutate(data))(e)}} className='space-y-4 flex flex-col' >
       
                       <div className="space-y-6">
                         <ParagraphInput register={register} defaultValue="" name='createFrontText' placeholder="Front Text" />
@@ -178,7 +207,7 @@ function App() {
                   <div>
                     {isEditing[index] ? (
                       <div className="flex flex-col">
-                        <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => onEditSubmit(data, index))(e)}}>
+                        <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => editCardMutation.mutate(data, index))(e)}}>
                           <ParagraphInput
                             register={register}
                             name='editFrontText'
@@ -207,7 +236,7 @@ function App() {
                         <div className="flex justify-between">
 
                           <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleEdit(index, true)}>Edit</button>
-                          <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => handleDelete(index)}>Delete</button>
+                          <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => deleteCardMutation.mutate(index)}>Delete</button>
 
 
                         </div>

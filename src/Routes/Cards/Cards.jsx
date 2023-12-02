@@ -50,14 +50,16 @@ function App() {
     }
   }, []);
 
-  function handleNextCard(rating) {
+  async function handleNextCard(rating) {
     console.log(dueCards);
     handleReview(docRef, dueCards[currentIndex], rating, intervalModifier);
     if (dueCards.length > currentIndex + 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
     } else {
       console.log('fetchDue notDue cards ran');
-      setDueCards(fetchDueCards(docRef));
+      const dueCards = await fetchDueCards(docRef);
+      setDueCards(dueCards);
+      console.log(dueCards);
       setCurrentIndex(0);
     }
     handleFlipCard();
