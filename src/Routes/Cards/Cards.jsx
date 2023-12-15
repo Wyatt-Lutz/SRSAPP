@@ -36,6 +36,8 @@ function App() {
       const currTime = new Date().getTime();
       const retainRate = (retained / studied) * 100;
 
+
+      let intervalModifier = 0;
       if (currTime - start === 907200000) {
         //10.5 days
         intervalModifier = Math.log(85) / Math.log(retainRate);

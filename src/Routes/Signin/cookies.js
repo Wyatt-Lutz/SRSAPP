@@ -6,9 +6,6 @@ import servKey from '../../../dev.js';
 //const servKey = process.env.serv_key;
 
 export async function issueCookie(data) {
-
-
-
   const now = new Date();
   const expireTime = new Date(now.getTime() + 604800000);
   const expires = expireTime.toUTCString();
@@ -29,12 +26,8 @@ export async function issueCookie(data) {
 }
 
 export async function decodeCookie() {
-
   const cookies = document.cookie;
   const [_, cookieDatas] = cookies.split('=');
-
-  const decryptedData = CryptoAES.decrypt(cookieDatas, servKey).toString(
-    CryptoENC,
-  );
+  const decryptedData = CryptoAES.decrypt(cookieDatas, servKey).toString(CryptoENC,);
   return decryptedData;
 }

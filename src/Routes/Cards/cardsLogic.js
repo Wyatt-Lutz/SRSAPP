@@ -9,17 +9,17 @@ export async function fetchDueCards(docRef) {
 
     if (!docSnap.exists()) {
         console.error('Error getting doc');
-        return;
+        return [];
     }
     const cardsData = docSnap.data().cards;
 
     const realDueCards = cardsData.filter((card) => card.nextReview <= currTime);
-    const dueCards = realDueCards.length != 0 ? realDueCards : cardsData.filter((card) => !card.isGraduated);
+    const dueCards = realDueCards.length ? realDueCards : cardsData.filter((card) => !card.isGraduated);
     return dueCards;
 }
 
 
-export async function handleReview(docRef, card, rating, iModifer) {
+export async function handleReview(docRef, card, rating, iModifier) {
     console.log('handleReview ran');
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -38,12 +38,7 @@ export async function handleReview(docRef, card, rating, iModifer) {
     ];
 
     const updatedCard = {...card};
-    const {
-      lastInterval: lastInterval,
-      lapses: lapses,
-      isGraduated: isGraduated,
-    } = card;
-
+    const { lastInterval, lapses, isGraduated } = card;
     let isLeech = false;
     let graduatedBool = false;
     let nextInterval = 0;
@@ -62,11 +57,11 @@ export async function handleReview(docRef, card, rating, iModifer) {
             currLapses++;
             nextInterval = intervals[1];
         } else if (rating === 1) {
-            nextInterval = (lastInterval / 2) * iModifer;
+            nextInterval = (lastInterval / 2) * iModifier;
         } else if (rating === 2) {
-            nextInterval = (lastInterval * 1.5) * iModifer;
+            nextInterval = (lastInterval * 1.5) * iModifier;
         } else if (rating === 3) {
-            nextInterval = (lastInterval * 2.5) * iModifer;
+            nextInterval = (lastInterval * 2.5) * iModifier;
         } else {
           isLeech = true;
           currLapses = 0;
@@ -81,16 +76,16 @@ export async function handleReview(docRef, card, rating, iModifer) {
 
 
       
-      const { retained, studied, cards } = docSnap.data();
-      const updatedCards = [...cards];
-      updatedCards[updatedCard.cardIndex] = updatedCard;
+    const { retained, studied, cards } = docSnap.data();
+    const updatedCards = [...cards];
+    updatedCards[updatedCard.cardIndex] = updatedCard;
 
 
-      await updateDoc(docRef, {
+    await updateDoc(docRef, {
         retained: retained + retainedCard,
         studied: studied + 1,
         cards: updatedCards,
-      });
+    });
 }
 
 

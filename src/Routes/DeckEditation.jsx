@@ -18,17 +18,16 @@ function App() {
   const { register, handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
   const hasMountedRef = useRef(false);
+
+
   const fetchData = async () => {
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
       console.error('deck not found');
       return [];
     }
-    const deckData = docSnap.data();
-    return deckData.cards.map((card) => ({ 
-      frontText: card.frontText, 
-      backText: card.backText 
-    }));
+    const { cards } = docSnap.data();
+    return cards.map(({ frontText, backText }) => ({ frontText, backText }));
   };
 
   const { data: cards, isLoading, isError, error } = useQuery({
@@ -76,13 +75,10 @@ function App() {
   },[cards]);
 
  
-  const onEditSubmit = async (data, index) => {
+  const onEditSubmit = async ({ editFrontText, editBackText }, index) => {
     try {
-    //const { editFrontText, editBackText } = data;
-    const front = data.editFrontText;
-    const back = data.editBackText;
     const newCards = [...cards];
-    newCards[index] = { frontText: front, backText: back };
+    newCards[index] = { frontText: editFrontText, backText: editBackText };
 
     handleEdit(index, false);
 
@@ -92,7 +88,7 @@ function App() {
       return;
     }
     const deckData = docSnap.data();
-    deckData.cards[index] = { frontText: front, backText: back };
+    deckData.cards[index] = { frontText: editFrontText, backText: editBackText };
     await setDoc(docRef, deckData, { merge: true });
     } catch (error) {
       console.error("onEditSubmit:" + error.message);
@@ -103,8 +99,8 @@ function App() {
     console.log('new card func ran');
     setIsOpen(false);
     reset({ frontText: '', backText: '' });
+
     const docSnap = await getDoc(docRef);
-    
     if (!docSnap.exists()) {
       console.error('deck not found');
       return;
@@ -148,10 +144,8 @@ function App() {
       console.error('doc doenst exist');
       return;
     }
-    const deckData = docSnap.data();
-    const cardsData = deckData.cards.filter(
-      (card) => card.cardIndex !== index
-    );
+    const { cards } = docSnap.data();
+    const cardsData = cards.filter((card) => card.cardIndex !== index);
     await setDoc(docRef, { cards: cardsData }, { merge: true });
 
 

@@ -39,32 +39,34 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    async () => {
+    const ifCookieSignin = async () => {
       const cookieData = await decodeCookie();
       if (cookieData) {
         setLoading(true);
         const [email, password] = cookieData.split(',');
-        signIn(email, password);
+        await signIn(email, password);
       }
-    };
+    }
+    ifCookieSignin();
   }, []);
 
-  const onSubmit = ({Email, Password}) => {
+  const onSubmit = async ({Email, Password}) => {
     if (checkboxRef.current.checked) {
-      issueCookie(parsedData);
+      await issueCookie(parsedData);
     }
-    signIn(Email, Password);
+    await signIn(Email, Password);
   };
 
   const signIn = async (email, password) => {
+    setLoading(true);
     try {
-      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       await setPersistence(auth, browserLocalPersistence);
-      setLoading(false);
       navigate('/decks');
     } catch (error) {
       console.error(error.code);
+    } finally {
+      setLoading(false);
     }
   };
 

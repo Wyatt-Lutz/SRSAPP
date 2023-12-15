@@ -31,6 +31,7 @@ function App() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
   }
   const localID = useState(guid())[0];
+  console.log(localID);
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), localID);
 
 
@@ -50,16 +51,13 @@ function App() {
     
 
     const docData = snap.data();
-    if (docData.cards) {
-      const isDupe = docData.cards.some((card) => card.frontText === front && card.backText === back);
-      if (isDupe) {
-        toast.error('A duplicate card already exists.');
-        
-        return;
-      }
+    const isDupe = docData.cards?.find(card => card.frontText === front && card.backText === back);
+    if (isDupe) {
+      toast.error('A duplicate card already exists.');
+      return;
     }
 
-    const currIndex = docData.cards ? docData.cards.length : 0;
+    const currIndex = docData.cards?.length || 0;
 
     const newCard = {
       frontText: front,
@@ -73,35 +71,32 @@ function App() {
     };
     
 
-
+    console.log(newCard, docRef);
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
+
+    
 
  
     reset({ FrontText: '', BackText: '' });
   }
 
 
-  const onNameSubmit = async (data) => {
+  const onNameSubmit = async ({ DeckName }) => {
     setIsOpen(false);
-    const parsedData = JSON.parse(JSON.stringify(data));
-    const deckName = parsedData.DeckName;
+    console.log(DeckName);
     await setDoc(docRef, {
-      name: deckName,
+      name: DeckName,
       retained: 0,
       studied: 0,
       start: new Date().getTime(),
     });
   };
 
-  const onCardSubmit = (data) => {
-    const parsedData = JSON.parse(JSON.stringify(data));
-    const front = parsedData.FrontText;
-    const back = parsedData.BackText;
-    createCard(front, back);
+  const onCardSubmit = ({ FrontText, BackText }) => {
+    createCard(FrontText, BackText);
     reset({ FrontText: '', BackText: '' });
-
   }
 
   function onFinish() {
