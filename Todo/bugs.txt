@@ -1,27 +1,28 @@
+
+
 Signup:
     - Add email verification (maybe)
 
 Signin:
-    - Check if its possible to use console or something to get the serv key because I have it as allow read on rules
-    - Add forgot password function
+    - Test forgot password more extensively
     
 
 Drawer:
-    - When you click decks or profile, it should auto close and not open unless button proximity again, this fix may require rewriting more stuff
-    - Signout kinda bugs sometimes, it will sign you back in
+    - Test drawer, though I think it works
 
 
 Decks:
     - Show how many cards are due for each deck 
     - Add individual deck settings (number of cards per day)
     - Pagination
-    - Search function
+    - Search function - I dont think I really need
     - Delete Button doesnt work immedietly
 
 DeckEditation:
     - While editing a card, then press edit on another card, you can have both edits open at same time
     - buggy react query -> rethink things with state and react query -> useReducer as a possibility
     - Unable to delete card if is only card left, or maybe if its index of 0, unsure
+    - change ui so that you can fit more cards or something
 
 DeckCreation:
     - Make sure user cant put in 3 trillion cards or whatever
@@ -29,6 +30,8 @@ DeckCreation:
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
 
 Cards:
+    - Add to algo so that a card to be reviewed is added at 12:00 AM instead of the specific 7 days after for example
+    - Make sure that when reviewing a deck, the new cards are shown every once in a while, for example, like after 10% of the reviewed cards are revieed. It should chagne with the number of new cards to be learned.
     - Pageination
     - Search function
 
@@ -44,12 +47,14 @@ Profile:
     
 
 App:
+    - Add a check to see if on mobile device and suggest or prevent user from not using website then. Add "app not made for mobile devices disclamer" or someting
     - Fix user persistance 
     - Add toast errors errwhere
     - Figure out why components take so long to load on first load
     - Non indigo colored buttons don't show color. Just remove button component and use regular button tag
     - WHen deleting something for user, just remove it from dom immeditatly
     - Chaching data - REACT QUERY!!
+    - UI errors here and there, such is on sign in and inspect elemnet is open
 
 
 

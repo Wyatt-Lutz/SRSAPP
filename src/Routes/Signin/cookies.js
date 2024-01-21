@@ -5,7 +5,7 @@ import servKey from '../../../dev.js';
 
 //const servKey = process.env.serv_key;
 
-export async function issueCookie(data) {
+export async function issueCookie(email, password) {
   const now = new Date();
   const expireTime = new Date(now.getTime() + 604800000);
   const expires = expireTime.toUTCString();
@@ -15,7 +15,7 @@ export async function issueCookie(data) {
   const httpOnly = true;
   const sameSite = 'lax';
 
-  const cookieData = [data.Email, data.Password];
+  const cookieData = [email, password];
 
   var encodedData = CryptoAES.encrypt(
     cookieData.toString(),

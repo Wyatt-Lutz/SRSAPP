@@ -52,7 +52,7 @@ export default function App() {
 
   const onSubmit = async ({Email, Password}) => {
     if (checkboxRef.current.checked) {
-      await issueCookie(parsedData);
+      await issueCookie(Email, Password);
     }
     await signIn(Email, Password);
   };
@@ -78,6 +78,7 @@ export default function App() {
       const snap = await getDocs(docRef);
 
       const isEmailFound = snap.docs.find((doc) => doc.data().email === Email);
+      console.log(isEmailFound);
 
       if (isEmailFound) {
         await sendPasswordResetEmail(auth, Email);

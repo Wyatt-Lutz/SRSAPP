@@ -13,15 +13,27 @@ export default function Drawer() {
     setIsOpen(!isOpen);
   }
 
-  function signOutUser() {
-    signOut(auth).then(() => {
-      console.log('signout successful');
-      document.cookie = "rememberMeToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  function navigateDecks() {
+    if (isOpen) {
+      navigate('./decks');
+      setIsOpen(false);
+    }
+  }
 
-      navigate('/');
-    }).catch((error) => {
-      console.error('signout failed: ' + error);
-    });
+  function signOutUser() {
+    if(isOpen) {
+      signOut(auth).then(() => {
+        console.log('signout successful');
+        document.cookie = "rememberMeToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+        navigate('/');
+      }).catch((error) => {
+        console.error('signout failed: ' + error);
+      });
+      setIsOpen(false);
+
+    }
+
     
   }
 
@@ -30,7 +42,7 @@ export default function Drawer() {
 
 
   return (
-    <div >
+    <div>
       {isOpen && (
         <div
           className="fixed inset-0 bg-black opacity-20"
@@ -39,13 +51,13 @@ export default function Drawer() {
       )}
     
       <div
-        className={`rounded-lg transition-all border-gray-900 shadow-2xl duration-500 fixed left-0 top-1/2 mx-2 w-24 h-42 bg-gray-700 transform ${
+        className={`rounded-lg ring transition-all border-gray-900 shadow-2xl duration-500 fixed left-0 top-1/2 mx-2 w-24 h-42 bg-gray-700 transform ${
           isOpen ? "-translate-y-12" : "translate-y-0 opacity-0"
         }`}
       >
         <div className="flex flex-col items-center justify-between space-y-3 p-2">
-          <button onClick={() => navigate('/decks')} className={drawerButtonStyle}>Decks</button>
-          <button onClick={() => navigate('/decks')} className={drawerButtonStyle}>Profile</button>
+          <button onClick={navigateDecks} className={drawerButtonStyle}>Decks</button>
+          <button onClick={navigateDecks} className={drawerButtonStyle}>Profile</button>
           <button onClick={signOutUser} className={drawerButtonStyle}>Sign Out</button>
         </div>
       </div>
