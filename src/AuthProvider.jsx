@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
           console.log("user is authenticated");
         }
       });
-      
+
       return () => {
         unsubscribe();
       };

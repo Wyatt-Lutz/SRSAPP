@@ -1,35 +1,9 @@
 import React, {useRef, useEffect, useState} from 'react';
-import {
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserLocalPersistence,
-  sendPasswordResetEmail,
-  sendSignInLinkToEmail,
-} from 'firebase/auth';
-import {issueCookie} from './cookies.js';
-import {decodeCookie} from './cookies.js';
-import {
-  getDoc,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  arrayUnion,
-  query,
-  where,
-  getDocs,
-} from 'firebase/firestore';
-import {
-  auth,
-  useForm,
-  toast,
-  Input,
-  db,
-  PasswordInput,
-  useNavigate,
-  LoadingOverlays,
-  Block
-} from '../../imports.js';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, sendPasswordResetEmail } from 'firebase/auth';
+import { issueCookie } from './cookies.js';
+import { decodeCookie } from './cookies.js';
+import { collection, getDocs } from 'firebase/firestore';
+import { auth, useForm, Input, db, PasswordInput, useNavigate, LoadingOverlays, Block } from '../../imports.js';
 
 export default function App() {
   const navigate = useNavigate();
@@ -71,7 +45,7 @@ export default function App() {
   };
 
 
-  const submitForgotPassword = async ({ Email }) => { 
+  const submitForgotPassword = async ({ Email }) => {
     try {
       setIsOpen(true);
       const docRef = collection(db, 'users');
@@ -87,12 +61,12 @@ export default function App() {
       } else {
         console.log('no account with that email');
       }
-      
+
 
     } catch (error) {
       console.error(error.message);
     }
-    
+
   };
 
   return (
@@ -106,7 +80,7 @@ export default function App() {
           <div className='text-3xl text-center font-bold text-white'>
             Enter Account Email
           </div>
-  
+
           <Input register={register} name='Email' placeholder='Email' />
           <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>
             Send Reset Email
@@ -130,7 +104,7 @@ export default function App() {
           name='Password'
           placeholder='Password'
         />
-  
+
         <div className='flex items-center justify-between'>
           <label className='flex items-center'>
             <input
@@ -149,11 +123,11 @@ export default function App() {
             Sign up
           </a>
         </div>
-  
+
         <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white w-full hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>
           Signin
         </button>
-  
+
         <div className='pt-2 flex justify-center'>
           <a
             onClick={submitForgotPassword}
@@ -166,6 +140,6 @@ export default function App() {
       </form>
     )}
   </Block>
-  
+
   );
 }

@@ -21,7 +21,7 @@ function App() {
 
 
 
-  
+
   const guid = () => {
     const s4 = () => {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -48,7 +48,7 @@ function App() {
       return;
     }
 
-    
+
 
     const docData = snap.data();
     const isDupe = docData.cards?.find(card => card.frontText === front && card.backText === back);
@@ -67,18 +67,19 @@ function App() {
       lastInterval: 60000,
       lapses: 0,
       isLeech: false,
+      isNew: true,
       cardIndex: currIndex,
     };
-    
+
 
     console.log(newCard, docRef);
     await updateDoc(docRef, {
       cards: arrayUnion(newCard),
     });
 
-    
 
- 
+
+
     reset({ FrontText: '', BackText: '' });
   }
 
@@ -105,18 +106,18 @@ function App() {
 
   return (
     <section className="flex h-screen flex-col justify-center">
-      
+
       {isOpen ? (
         <div className="flex items-center justify-center h-screen bg-transparent" isOpen={isOpen}>
             <div className="flex flex-col items-center justify-center rounded-lg bg-gray-700 w-full max-w-md space-y-6 py-8 shadow-lg">
               <h1 className='font-bold text-3xl text-indigo-400'>Enter Deck Name</h1>
               <form className="space-y-4 px-6" onSubmit={handleSubmit(onNameSubmit)}>
                 <Input register={register} name='DeckName' placeholder="Deck Name"/>
- 
+
                 <button className='shadow-indigo-500/50 shadow-2xl w-full rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => setIsOpen(true)}>Continue</button>
-                
-                
-       
+
+
+
               </form>
             </div>
         </div>
@@ -127,15 +128,15 @@ function App() {
 
 
       {isOpen ? null : (
-        
+
         <div className="flex items-center justify-center">
           <div className="flex flex-col">
             <div className="rounded-lg bg-gray-700 p-6 shadow-2xl">
               <div className='flex pb-3 justify-between'>
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
-          
-                  
-      
+
+
+
                   <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={onFinish}>Finish Deck</button>
 
               </div>
@@ -150,7 +151,7 @@ function App() {
                 <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800'>Add Card</button>
               </form>
 
-       
+
             </div>
           </div>
         </div>

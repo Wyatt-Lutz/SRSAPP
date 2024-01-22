@@ -25,7 +25,7 @@ export default function Drawer() {
       signOut(auth).then(() => {
         console.log('signout successful');
         document.cookie = "rememberMeToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  
+
         navigate('/');
       }).catch((error) => {
         console.error('signout failed: ' + error);
@@ -34,7 +34,7 @@ export default function Drawer() {
 
     }
 
-    
+
   }
 
 
@@ -49,9 +49,9 @@ export default function Drawer() {
           onClick={handleClick}
         />
       )}
-    
+
       <div
-        className={`rounded-lg ring transition-all border-gray-900 shadow-2xl duration-500 fixed left-0 top-1/2 mx-2 w-24 h-42 bg-gray-700 transform ${
+        className={`rounded-lg transition-all ring shadow-2xl duration-500 fixed left-0 top-1/2 mx-2.5 w-24 h-42 bg-gray-700 transform ${
           isOpen ? "-translate-y-12" : "translate-y-0 opacity-0"
         }`}
       >
@@ -95,7 +95,7 @@ export default function Drawer() {
           />
         </svg>
       </button>
-      
+
 
 
 

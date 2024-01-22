@@ -32,7 +32,7 @@ export default function App() {
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div className='font-bold text-indigo-400 text-3xl'>Create an Account</div>
         <Input register={register} name='Email' placeholder='Email' />
-    
+
         <div>
           <PasswordInput
             register={register}
@@ -58,6 +58,6 @@ export default function App() {
 
 
     </Block>
-  
+
   );
 }
