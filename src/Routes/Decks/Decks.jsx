@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { auth, useNavigate, LoadingOverlays, Block} from '../../imports.js';
+import { auth, db, useNavigate, LoadingOverlays, Block} from '../../imports.js';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import { collection, query, doc, deleteDoc, getDocs, getDoc } from 'firebase/firestore';
 
-import { db } from '../../imports.js';
 
 function App() {
   const navigate = useNavigate();
+  //console.log(auth);
   const user = auth.currentUser;
   const queryClient = useQueryClient();
 
@@ -15,16 +15,15 @@ function App() {
 
 
 
-
+  //console.log(user.uid);
   const deckQuery = useQuery({
     queryKey: ['decks'],
     queryFn: fetchDecks,
   });
 
-
   const deleteDeckMutation = useMutation({
     mutationFn: deckId => {
-      deleteDeck(deckId)
+      deleteDeck(deckId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['decks'] });
@@ -39,11 +38,9 @@ function App() {
   }
 
 
-
-
-
   async function fetchDecks() {
     console.info('Fetch Decks ran');
+    //console.log(user.uid);
     const decksRef = collection(db, 'users', user.uid, 'decks');
     const decksQuery = query(decksRef);
     const snapshot = await getDocs(decksQuery);

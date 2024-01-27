@@ -42,6 +42,7 @@ DeckCreation:
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
 
 Cards:
+    -rethink whole cardindex thing because it dosnt change if I delete cards before it for examle
     - add isNew functioanlity
     - Add to algo so that a card to be reviewed is added at 12:00 AM instead of the specific 7 days after for example
     - Extensive Testing
