@@ -13,7 +13,10 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const ifCookieSignin = async () => {
+    ifCookieSignin();
+
+
+    async function ifCookieSignin() {
       const cookieData = await decodeCookie();
       if (cookieData) {
         setLoading(true);
@@ -21,7 +24,6 @@ export default function App() {
         await signIn(email, password);
       }
     }
-    ifCookieSignin();
   }, []);
 
   const onSubmit = async ({Email, Password}) => {

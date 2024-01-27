@@ -1,11 +1,21 @@
 https://www.youtube.com/watch?v=zQyrwxMPm88&ab_channel=Fireship - can use the same user auth when fixing auth
 https://www.youtube.com/watch?v=k4mjF4sPITE&ab_channel=LamaDev - chatapp
 
+
+Notes - for buttons that seem to be autonmatically clicked use:
+
+<button onClick={() => console.log('clicked')}>Click</button>
+is the solution. When you put paranthesis without using the arrow function, it will automatically execute without waiting for you to click the button
+
+
+
 Signup:
     - Add email verification (maybe)
 
 Signin:
     - Test forgot password more extensively
+    -redo the whole loading state, because its definaetly not a good way
+    - get all possible sign in errors and toast error them, unless better way
 
 
 Drawer:

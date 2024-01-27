@@ -28,6 +28,6 @@ export async function issueCookie(email, password) {
 export async function decodeCookie() {
   const cookies = document.cookie;
   const [_, cookieDatas] = cookies.split('=');
-  const decryptedData = CryptoAES.decrypt(cookieDatas, servKey).toString(CryptoENC,);
+  const decryptedData = CryptoAES.decrypt(cookieDatas, _, servKey).toString(CryptoENC);
   return decryptedData;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { auth, useNavigate, LoadingOverlays, Block} from '../../imports.js';
-import { useQueryClient, useQuery, useMutation } from 'react-query';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import { collection, query, doc, deleteDoc, getDocs, getDoc } from 'firebase/firestore';
 
 import { db } from '../../imports.js';
@@ -14,68 +14,64 @@ function App() {
   const [settingsOpen, setSettingsOpen] = useState(null);
 
 
-  //const { data: decks, isLoading, isError } = useQuery('decksKey', () => fetchDecks(user.uid));
-  const { data: decks, isLoading, isError, error } = useQuery({
-    queryKey: ['deckQueryKey'],
-    queryFn: () => fetchDecks(user.uid),
+
+
+  const deckQuery = useQuery({
+    queryKey: ['decks'],
+    queryFn: fetchDecks,
   });
 
-  const deleteDeckMutation = useMutation((deckId) => deleteDeck(user.uid, deckId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('deckQueryKey');
-    },
-  }
-  );
 
-  if (isLoading) {
+  const deleteDeckMutation = useMutation({
+    mutationFn: deckId => {
+      deleteDeck(deckId)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['decks'] });
+    },
+  });
+
+  if (deckQuery.isPending) {
     return <LoadingOverlays isLoading={true} />
   }
-  if (isError) {
-    return <p>Error: {error.message}</p>
-  }
-
-  async function getNumberDue(cardsData) {
-    const currTime = new Date().getTime();
-    let dueCount = 0;
-    let newCount = 0;
-    cardsData.forEach((card) => {
-      if (card.nextReview < currTime) {
-        dueCount++;
-      }
-      if (card.isNew) {
-        newCount++
-      }
-    })
-    dueCount = dueCount.toString();
-    newCount = newCount.toString();
-    return { dueCount, newCount };
-
+  if (deckQuery.isError) {
+    return <div>{deckQuery.error.message}</div>
   }
 
 
-  async function fetchDecks(userId) {
-    const decksRef = collection(db, 'users', userId, 'decks');
+
+
+
+  async function fetchDecks() {
+    console.info('Fetch Decks ran');
+    const decksRef = collection(db, 'users', user.uid, 'decks');
     const decksQuery = query(decksRef);
     const snapshot = await getDocs(decksQuery);
+    const currTime = new Date().getTime();
 
-
-    const fetchedDecks = snapshot.docs.map((doc) => {
-      const { dueCount, newCount } = getNumberDue(doc.data().cards);
-      console.log(dueCount);
-
+    const fetchedDecks = snapshot?.docs.map((doc) => {
+      let dueCount = 0;
+      let newCount = 0;
+      doc.data().cards.forEach((card) => {
+        if(card.isNew) {
+          newCount += 1;
+        } else if (card.nextReview < currTime) {
+          dueCount += 1;
+        }
+      });
       return {
         id: doc.id,
         name: doc.data().name,
         dueCount: dueCount,
-        newCount: newCount
+        newCount: newCount,
       }
 
     });
     return fetchedDecks;
   }
 
-  async function deleteDeck(userId, deckId) {
-    const deckRef = doc(collection(db, 'users', userId, 'decks'), deckId);
+  async function deleteDeck(deckId) {
+    const deckRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
     await deleteDoc(deckRef);
   }
 
@@ -84,6 +80,8 @@ function App() {
 
   function handleButtonClick(action, deckId, e) {
     e.preventDefault();
+    console.info('handleButtonClick ran');
+
     switch (action) {
       case 'study':
         navigate(`/decks/study?id=${deckId}`);
@@ -103,7 +101,7 @@ function App() {
     }
   }
 
-
+  console.log(deckQuery.data);
 
 
   return (
@@ -122,24 +120,24 @@ function App() {
 
     </div>
 
-    {decks.length === 0 && <div>You don't have any decks created🤣🤣🤣</div>}
+    {deckQuery.data === null && <div>You don't have any decks created🤣🤣🤣</div>}
 
 
-    {decks.length != 0 &&(
-          <div className='flex mb-2'>
-          <div className='indent-64 text-lg font-bold text-white '>
-            Learn
-          </div>
-          <div className='indent-8 text-lg font-bold text-white'>
-            Due
-          </div>
+    {deckQuery.data !== null && (
+      <div className='flex mb-2'>
+        <div className='indent-64 text-lg font-bold text-white '>
+          Learn
         </div>
+        <div className='indent-8 text-lg font-bold text-white'>
+          Due
+        </div>
+      </div>
 
     )}
 
 
 
-    {decks.map((deck) => (
+    {deckQuery.data?.map((deck) => (
       <div key={deck.id} onClick={(e) => {handleButtonClick('study', deck.id, e)(e)}} className='flex duration-200 border-4 border-gray-500 justify-around min-h-14 group/edit mb-6 hover:bg-slate-700 group/item rounded-lg bg-gray-600'>
 
         <div className='text-2xl font-bold text-white'>
@@ -147,11 +145,11 @@ function App() {
           </div>
 
 
-          <div className=''>
-            <div className='text-white'>
+          <div className='flex'>
+            <div className='text-green-500 font-bold mx-4'>
               {deck.newCount}
             </div>
-            <div className='text-white'>
+            <div className='text-red-500 font-bold mx-4'>
               {deck.dueCount}
             </div>
 

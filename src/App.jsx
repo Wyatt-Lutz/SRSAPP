@@ -8,13 +8,11 @@ const Cards = lazy(() => import('./Routes//Cards/Cards.jsx'));
 const DeckCreation = lazy(() => import('./Routes/DeckCreation.jsx'));
 const Decks = lazy(() => import('./Routes/Decks/Decks.jsx'));
 const DeckEditation = lazy(() => import('./Routes/DeckEditation.jsx'));
-import { QueryClient, QueryClientProvider } from 'react-query';
-const queryClient = new QueryClient();
+
 
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
       <Profiler id="App">
           <Layout />
             <Suspense>
@@ -31,7 +29,6 @@ const App = () => {
               </Routes>
             </Suspense>
       </Profiler>
-    </QueryClientProvider>
   );
 };
 
