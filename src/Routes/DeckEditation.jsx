@@ -7,7 +7,7 @@ import { db, auth, useForm, toast, ParagraphInput, LoadingOverlays, useNavigate,
 ReactModal.setAppElement('#root');
 
 function App() {
-  const [isEditing, setIsEdit] = useState([]);
+  const [isEditing, setIsEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
@@ -35,8 +35,8 @@ function App() {
 
 
   const editCardMutation = useMutation({
-    mutationFn: (data, index) =>
-      onEditSubmit(data, index),
+    mutationFn: (data, id) =>
+      onEditSubmit(data, id),
 
     onSuccess: () => {
       setTimeout(() => {
@@ -46,8 +46,8 @@ function App() {
   });
 
   const deleteCardMutation = useMutation({
-    mutationFn: index => {
-      handleDelete(index);
+    mutationFn: id => {
+      handleDelete(id);
     },
     onSuccess: () => {
       setTimeout(() => {
@@ -79,7 +79,14 @@ function App() {
 
 //-143 -21
 
-
+  const guid = () => {
+    const s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  }
 
   async function fetchData() {
     const docSnap = await getDoc(docRef);
@@ -88,8 +95,12 @@ function App() {
       return [];
     }
     const { cards } = docSnap?.data();
-    console.log(cards.map( ({ frontText, backText, cardIndex }) => ({ frontText, backText, cardIndex }) ));
-    return cards.map( ({ frontText, backText, cardIndex }) => ({ frontText, backText, cardIndex }) );
+    setIsEdit(cards.reduce((acc, {cardID}) => {
+      acc[cardID] = false;
+      return acc;
+    }, {}));
+    return cards.map( ({ frontText, backText, cardID }) => ({ frontText, backText, cardID }) );
+
 
   }
 
@@ -97,29 +108,37 @@ function App() {
 
 
 
-  async function onEditSubmit({data, index}) {
 
+  async function onEditSubmit({data, id}) {
       console.info('onEditSubmit ran');
       console.log(data);
-      console.log(index);
-      const newCards = [...cardsQuery.data];
-      newCards[index] = { frontText: data.editFrontText, backText: data.editBackText };
+      console.log(id);
 
-      handleEdit(index, false);
+      handleEdit(id, false);
 
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         console.error('deck not found');
         return;
       }
-      const deckData = docSnap.data();
-      deckData.cards[index] = { ...deckData.cards, frontText: data.editFrontText, backText: data.editBackText };
-      console.log(deckData);
-      await setDoc(docRef, deckData, { merge: true });
+
+
+      const { cards } = docSnap.data();
+      const indexOfNewCard = cards.findIndex(card => card.cardID === id);
+      console.log(indexOfNewCard);
+
+
+      const newCard = { ...cards[indexOfNewCard], frontText: data.editFrontText, backText: data.editBackText };
+
+      cards[indexOfNewCard] = newCard;
+      await updateDoc(docRef, {
+        cards: [...cards],
+      }, { merge: true });
 
   }
 
   const onNewCardSubmit = async (data) => {
+    const cardID = guid();
     console.log('new card func ran');
     setIsOpen(false);
     reset({ frontText: '', backText: '' });
@@ -139,7 +158,9 @@ function App() {
       nextReview: Date.now(),
       lastInterval: 60000,
       lapses: 0,
+      isNew: true,
       isLeech: false,
+      cardID: cardID,
       cardIndex: deckData.cards.length,
     };
 
@@ -151,17 +172,28 @@ function App() {
 
 
   }
+  useEffect(() => {
 
-  function handleEdit(index, bool) {
-    setIsEdit((prev) => {
-      prev[index] = bool;
-      return [...prev];
-    });
+
+  }, [])
+
+  function handleEdit(id, bool) {
+    if ((Object.values(isEditing).some(value => value === true)) && bool) {
+      console.log('Already editing card');// need toast
+      return;
+    }
+    console.log(isEditing);
+    setIsEdit(prev => ({
+      ...prev,
+      [id]: bool,
+    }));
+
+    console.log(isEditing);
   }
 
-  async function handleDelete(index) {
+  async function handleDelete(id) {
 
-    console.log(index)
+    console.log(id);
 
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -169,7 +201,7 @@ function App() {
       return;
     }
     const { cards } = docSnap.data();
-    const cardsData = cards.filter((card) => card.cardIndex !== index);
+    const cardsData = cards.filter((card) => card.cardID !== id);
     console.log(cardsData);
     await setDoc(docRef, { cards: cardsData }, { merge: true });
 
@@ -216,19 +248,22 @@ function App() {
             {cardsQuery.data?.map((card) => (
 
 
-              <div key={card.cardIndex} className="mb-7 rounded-lg bg-gray-600">
+              <div key={card.cardID} className="mb-7 rounded-lg bg-gray-600">
+                {card.frontText}
                 <div className="p-4">
                   <div>
-                    {isEditing[card.cardIndex] ? (
+                    {isEditing[card.cardID] ? (
                       <div className="flex flex-col">
-                        <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => editCardMutation.mutate({data, index: card.cardIndex}))(e)}}>
+                        <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => editCardMutation.mutate({data, id: card.cardID}))(e)}}>
                           <ParagraphInput
                             register={register}
                             name='editFrontText'
                             defaultValue={card.frontText}
 
                           />
-                          <div>{card.cardIndex}</div>
+                          {card.frontText}
+
+
                           <ParagraphInput
                             register={register}
                             name='editBackText'
@@ -250,8 +285,8 @@ function App() {
                         </div>
                         <div className="flex justify-between">
 
-                          <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleEdit(card.cardIndex, true)}>Edit</button>
-                          <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => deleteCardMutation.mutate(card.cardIndex)}>Delete</button>
+                          <button className='shadow-indigo-500/50 shadow-2xl rounded-lg bg-indigo-500 px-5 py-2 text-xl font-bold text-white hover:bg-indigo-600 focus:outline-none active:bg-indigo-800' onClick={() => handleEdit(card.cardID, true)}>Edit</button>
+                          <button className='shadow-red-500/50 shadow-2xl rounded-lg bg-red-500 px-5 py-2 text-xl font-bold text-white hover:bg-red-600 focus:outline-none active:bg-red-800' onClick={() => deleteCardMutation.mutate(card.cardID)}>Delete</button>
 
 
                         </div>

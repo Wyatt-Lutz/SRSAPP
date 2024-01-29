@@ -30,9 +30,9 @@ function App() {
     }
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
   }
-  const localID = useState(guid())[0];
-  console.log(localID);
-  const docRef = doc(collection(db, 'users', user.uid, 'decks'), localID);
+  const deckID = useState(guid())[0];
+
+  const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckID);
 
 
 
@@ -42,6 +42,7 @@ function App() {
   async function createCard(front, back) {
 
     const snap = await getDoc(docRef);
+    const cardID = guid();
 
     if(!snap.exists() ) {
       toast.error('The deck doesn\'t exist.');
@@ -57,7 +58,7 @@ function App() {
       return;
     }
 
-    const currIndex = docData.cards?.length || 0;
+    //const currIndex = docData.cards?.length || 0;
 
     const newCard = {
       frontText: front,
@@ -68,7 +69,7 @@ function App() {
       lapses: 0,
       isLeech: false,
       isNew: true,
-      cardIndex: currIndex,
+      cardID: cardID,
     };
 
 
