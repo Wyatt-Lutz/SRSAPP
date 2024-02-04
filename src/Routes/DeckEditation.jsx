@@ -22,7 +22,6 @@ function App() {
   const docRef = doc(collection(db, 'users', user.uid, 'decks'), deckId);
 
   const queryClient = useQueryClient();
-  const hasMountedRef = useRef(false);
 
 
 
@@ -77,7 +76,7 @@ function App() {
     return <div>{cardsQuery.error.message}</div>
   }
 
-//-143 -21
+
 
   const guid = () => {
     const s4 = () => {
@@ -134,6 +133,7 @@ function App() {
       await updateDoc(docRef, {
         cards: [...cards],
       }, { merge: true });
+      //reset({ frontText: '', backText: '' });
 
   }
 
@@ -213,9 +213,9 @@ function App() {
     <section>
       {isOpen ? (
 
-                <div className="flex bg-transparent h-screen items-center justify-center" isOpen={isOpen}>
+              <div className="flex bg-transparent h-screen items-center justify-center" isOpen={isOpen}>
 
-                  <div className="rounded-lg bg-gray-700 p-6 shadow-2xl">
+                <div className="rounded-lg bg-gray-700 p-6 shadow-2xl">
                   <div className="text-3xl text-center font-bold text-white">Create a Card</div>
 
                     <form onSubmit={(e) => {e.preventDefault(); handleSubmit((data) => addCardMutation.mutate(data))(e)}} className='space-y-4 flex flex-col' >
@@ -261,7 +261,9 @@ function App() {
                             defaultValue={card.frontText}
 
                           />
-                          {card.frontText}
+
+
+                          {card.cardID}
 
 
                           <ParagraphInput
