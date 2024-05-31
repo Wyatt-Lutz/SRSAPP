@@ -40,19 +40,19 @@ Also, some aspects to the algorithm may not be implemented yet.
 
       The max interval is 1 year.
 
-    3. Easy Bonus:
+3. Easy Bonus:
       If a graduated card is given a rating of Easy, the old interval that will normally be multiplied by the EF, will also be multiplied by the Easy Bonus.
       The default easy bonus is 1.3x
     
-    4. Hard Penalty:
+4. Hard Penalty:
       If a graduated card is given a rating of Hard, the new interval will be the old interval divided by 1.2x. 
 
-    4. Lapsed Cards
+5. Lapsed Cards
       A lapsed card is a graduated card that goes back into the Learning stage if the user rates the card with "Again".
       The new starting interval will be 0.6x the old interval.
       
 
-    5. Leech cards.
+6. Leech cards.
       Leech cards are cards that have lapsed 6 times.
       The user is not told whether a card is put into the leech category and leech cards will not show up for review.
       However, leech cards can be reverted back to review cards manually by the user in the edit settings of a deck.
