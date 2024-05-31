@@ -10,7 +10,7 @@ Also, some aspects to the algorithm may not be implemented yet.
       EF only applies after graduation and is 1.3x.
 
 
-    2. Learning and Graduation:
+ 2. Learning and Graduation:
       A new card starts in the learning stage whcih is represented by 3 learning steps, each with increasing intervals.
       Learning steps:
         1 - 1 minute
@@ -20,22 +20,22 @@ Also, some aspects to the algorithm may not be implemented yet.
       When a card is at the 3rd learning step two times in a row or is given a rating of "Easy", it goes into the graduation stage.
       Each card after graduating is given a new interval of 1 day and an Easiness factor of 2.5x (See Easiness Factor below).
 
-      Ratings:
-        Again - User did not know the answer.
-          -Learning: Card goes to first step.
-          -Graduation: Immedietly goes back to learning on step 1.
+    Ratings:
+       Again - User did not know the answer.
+             -Learning: Card goes to first step.
+             -Graduation: Immedietly goes back to learning on step 1.
 
-    Hard - Correct response with larger hesitation and/or uncertanty.
-          -Learning: Card is given the average interval if the card were rated Again and Good. Default is 5.5 minutes.
-          -Graduation: See Hard Penalty. 
+       Hard - Correct response with larger hesitation and/or uncertanty.
+            -Learning: Card is given the average interval if the card were rated Again and Good. Default is 5.5 minutes.
+            -Graduation: See Hard Penalty. 
 
-    Good - Correct response with little hesitation
-          -Learning: Card goes to the third step, unless it is the second rating of Good in a row, graduating the card.
-          -Graduation: No changes.
+       Good - Correct response with little hesitation
+            -Learning: Card goes to the third step, unless it is the second rating of Good in a row, graduating the card.
+            -Graduation: No changes.
 
-    Easy - User knew the answer with zero hesitation.
-          -Learning: Card immediatly goes to the graduation stage starting at a 1 day interval.
-          -Graduation: See Easy Bonus.
+       Easy - User knew the answer with zero hesitation.
+            -Learning: Card immediatly goes to the graduation stage starting at a 1 day interval.
+            -Graduation: See Easy Bonus.
 
       The max interval is 1 year.
 
