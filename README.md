@@ -21,6 +21,7 @@ Also, some aspects to the algorithm may not be implemented yet.
       Each card after graduating is given a new interval of 1 day and an Easiness factor of 2.5x (See Easiness Factor below).
 
     Ratings:
+    
        Again - User did not know the answer.
              -Learning: Card goes to first step.
              -Graduation: Immedietly goes back to learning on step 1.
