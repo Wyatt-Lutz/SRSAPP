@@ -38,6 +38,7 @@ DeckEditation:
     - Is there a delete deck feature? if not built it and make sure to warn users beforehand
 
 DeckCreation:
+    - could add a check to see if already deck with name
     - Make sure user cant put in 3 trillion cards or whatever
     - When cancel button is pressed, delete the deck in database, and warn user just in case it was accident (are you sure? this will perminanrly delete the deck)
 
